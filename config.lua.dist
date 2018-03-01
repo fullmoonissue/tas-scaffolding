@@ -1,0 +1,22 @@
+-- Frame number to make a savestate
+-- Requirements : have to be an integer
+local doSaveStateAt = nil
+
+-- Slot (Savestate) to load
+-- Requirements : have to be an integer between 0 and 9
+local loadSlot = nil
+
+-- Slot (Savestate) to save (if doSaveStateAt is assigned)
+-- Requirements : have to be an integer between 0 and 9
+local saveSlot = nil
+
+-- Current Tas
+-- Requirements : have to be a string (and the name of a folder in the tas folder)
+local currentTas = nil
+
+return {
+    ['currentTas'] = currentTas,
+    ['doSaveStateAt'] = doSaveStateAt,
+    ['loadSlot'] = loadSlot,
+    ['saveSlot'] = saveSlot,
+}

@@ -1,0 +1,9 @@
+# The config.lua file have to be copied from config.lua.dist then edited
+config.lua
+
+# The start_overlay.lua file have to be copied from start_overlay.lua.dist then edited (or not)
+start_overlay.lua
+
+# Dumps are not kept
+dump/*
+!dump/.gitkeep

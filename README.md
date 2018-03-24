@@ -8,8 +8,8 @@ After all files and folders of this project copied into yours :
 
 ## Todo
 
-* Add a folder for RAM Watchers
 * Add a dump for Bizhawk
+* Add a command to create a macro and show how to create tas file
 * More metatable style like
 * Add tests with luanit (make tas and dump paths configurable)
 * Explain the whole process

@@ -4,8 +4,7 @@
 
 After all files and folders of this project copied into yours :
 
-1. Copy and rename config.lua.dist into config.lua and assign values if needed
-2. Copy and rename start_overlay.lua.dist into start_overlay.lua and code it if needed
+1. Copy and rename config.lua.dist into config.lua and assign values
 
 ## Todo
 

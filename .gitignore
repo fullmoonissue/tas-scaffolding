@@ -1,6 +1,11 @@
-# The config.lua file have to be copied from config.lua.dist then edited
+# Values in config.lua will always change during the tas and are not valuable to commit
 config.lua
 
-# Dumps are not kept
-dump/*
-!dump/.gitkeep
+# cf README.md ; Handle conflicts, methods not allowed and cross OS
+mediator.lua
+
+# Build of the scaffolding to put into your new tas folder
+tas-scaffolding.tar.gz
+
+# Modules installed from make install
+lua_modules

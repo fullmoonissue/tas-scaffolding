@@ -1,17 +1,42 @@
 # Scaffolding of your next tas
 
-## User guide
+## Installation
 
-After all files and folders of this project copied into yours :
+    # Dependencies mandatory during setup and build of your tas
+    make install
+    
+    # Dependencies about the development of this project, "sudo" right might be asked
+    make install-dev
 
-1. Copy and rename config.lua.dist into config.lua and assign values
+## Handle conflicts, methods not allowed and cross OS
+
+Here are some points to clarify to understand some choices made in this project :
+
+* Method io.popen is not allowed in Bizhawk
+    * So we can't use io.popen('/bin/ls') to list the files which are representing the TAS
+    * The lfs library is used outside Bizhawk's scope (because of .dll or .so file switch OS)
+    * Solution : The file bizhawk/files.lua is filled (see make bizhawk-lfs)
+    * => When you register a file for the TAS (see make register), take care of the files order
+* Method require on different OS & package.preload & . in folder's name
+    * The mediator.lua file (from the mediator_lua library) is copied to the root of the TAS
+
+## Preloads
+
+If a savestate have to be load before a tas, you can configure it in bizhawk/preloads.lua
+
+    # Example
+    # A folder named my-current-tas have to exists in the tas directory
+    # A savestate named my-savestate have to exists in the bizhawk/savestate directory
+    return {
+        ['my-current-tas'] = 'my-savestate',
+    }
 
 ## Todo
 
-* Add a dump for Bizhawk
-* Add a command to create a macro and show how to create tas file
-* More metatable style like
-* Add tests with luanit (make tas and dump paths configurable)
+* Add input visualizer (like stepmania)
+* Add time splitter (like live split)
+* Add tests with luaunit
+* Add hook for luacheck and luaunit
 * Explain the whole process
   * start.lua for Bizhawk
   * the continuing reboot core process

@@ -1,5 +1,7 @@
 lua_modules
 .idea
 .git
+.luacheckrc
 .tarignore
 tas-scaffolding.tar.gz
+tests

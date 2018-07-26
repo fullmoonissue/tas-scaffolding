@@ -1,7 +1,8 @@
-local Input = require('tas/input')
-local input = Input()
+local input = require('tas/input')()
+--local macro = require('tas/macro-collection')()
 
---local cf
---cf = input:start(1, 2)
+local cf = 1
+cf = input:start(cf, 2)
+print(cf)
 
 return input:all()

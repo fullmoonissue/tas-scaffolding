@@ -1,11 +1,11 @@
-# Values in config.lua will always change during the tas and are not valuable to commit
+# Values in config.lua will always change during the tas and are not valuable
 config.lua
 
-# cf README.md ; Handle conflicts, methods not allowed and cross OS
+# cf README.md ; Rocks used with Bizhawk are copied in the root of the project
 mediator.lua
 
 # Build of the scaffolding to put into your new tas folder
 tas-scaffolding.tar.gz
 
-# Modules installed from make install
+# Rocks installed from make install
 lua_modules

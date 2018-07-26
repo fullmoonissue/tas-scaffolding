@@ -13,6 +13,10 @@ local Input = setmetatable(
                     return bag
                 end,
 
+                reset = function()
+                    bag = {}
+                end,
+
                 setPlayer = function(player)
                     currentPlayer = 'P' .. player
                 end,
@@ -21,7 +25,14 @@ local Input = setmetatable(
                     local currentFrame
                     for i = 1, (iterations or 1) do
                         currentFrame = tonumber(frame + (i - 1))
-                        bag[currentFrame] = joypad
+
+                        if (not bag[currentFrame]) then
+                            bag[currentFrame] = {}
+                        end
+
+                        for k, v in pairs(joypad) do
+                            bag[currentFrame][k] = v
+                        end
                     end
 
                     return currentFrame

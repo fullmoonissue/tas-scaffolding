@@ -1,17 +1,35 @@
+# ### ### ### ### ### ### ### ### ### ### ### #
+# Section for the scaffolding and the new TAS #
+# ### ### ### ### ### ### ### ### ### ### ### #
+
 install:
 	luarocks install mediator_lua --tree lua_modules
 	luarocks install luafilesystem --tree lua_modules
 
-install-dev:
-	luarocks install luaunit
-	luarocks install luacheck
+# ### ### ### ### ### ### ### #
+# Section for the scaffolding #
+# ### ### ### ### ### ### ### #
 
-init:
-	@mv config.lua.dist config.lua
-	@mv doc/README-template.md README.md
-	@rm -rf doc
+build-scaffolding:
 	@rm -f tas-scaffolding.tar.gz
-	@cp lua_modules/share/lua/5.3/mediator.lua mediator.lua
+	@touch tas-scaffolding.tar.gz
+	@tar -zcf tas-scaffolding.tar.gz --exclude=tas-scaffolding.tar.gz -X .tarignore .
+	@cat doc/build-scaffolding.md
+
+check:
+	luacheck --std=min+bizhawk bizhawk tas templates paths.lua start.lua
+
+install-dev:
+	luarocks install luacheck
+	luarocks install luaunit
+
+test:
+	lua tests/tas/test_dump.lua -v
+	lua tests/tas/test_input.lua -v
+
+# ### ### ### ### ### ### #
+# Section for the new TAS #
+# ### ### ### ### ### ### #
 
 bizhawk-dump:
 	@if [ '$(TAS)' == '' ]; then \
@@ -24,14 +42,12 @@ bizhawk-dump:
 bizhawk-lfs:
 	@lua -e "f=io.open('bizhawk/files.lua', 'w'); f:write(require('tas/dump')().lfsForBizhawk('tas')); f:close();"
 
-build-scaffolding:
+init:
+	@mv config.lua.dist config.lua
+	@mv doc/README-template.md README.md
+	@rm -rf doc
 	@rm -f tas-scaffolding.tar.gz
-	@touch tas-scaffolding.tar.gz
-	@tar -zcf tas-scaffolding.tar.gz --exclude=tas-scaffolding.tar.gz -X .tarignore .
-	@cat doc/build-scaffolding.md
-
-check:
-	luacheck --std=min+bizhawk bizhawk tas templates paths.lua start.lua
+	@cp lua_modules/share/lua/5.3/mediator.lua mediator.lua
 
 register:
 	@if [ '$(TAS)' == '' ]; then \

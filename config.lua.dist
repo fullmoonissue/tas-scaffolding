@@ -1,11 +1,3 @@
--- Frame where a savestate will be made
--- Requirements : have to be an integer
-local doSaveStateAt = nil
-
--- Savestate's slot (if doSaveStateAt is assigned)
--- Requirements : have to be an integer between 0 and 9
-local saveSlot = nil
-
 -- Savestate's slot to load when the script is (re)loaded
 -- Requirements : have to be an integer between 0 and 9
 local loadSlot = nil
@@ -16,7 +8,5 @@ local currentTas = nil
 
 return {
     ['currentTas'] = currentTas,
-    ['doSaveStateAt'] = doSaveStateAt,
     ['loadSlot'] = loadSlot,
-    ['saveSlot'] = saveSlot,
 }

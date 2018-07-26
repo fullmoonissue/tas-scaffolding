@@ -12,12 +12,12 @@
 
 Here are some points to clarify to understand some choices made in this project :
 
-* Method io.popen is not allowed in Bizhawk
+* Problem : Method io.popen is not allowed in Bizhawk
     * So we can't use io.popen('/bin/ls') to list the files which are representing the TAS
     * The lfs library is used outside Bizhawk's scope (because of .dll or .so file switch OS)
     * Solution : The file bizhawk/files.lua is filled (see make bizhawk-lfs)
     * => When you register a file for the TAS (see make register), take care of the files order
-* Method require on different OS & package.preload & . in folder's name
+* Problem : Method require on different OS & package.preload & . in folder's name
     * The mediator.lua file (from the mediator_lua library) is copied to the root of the TAS
 
 ## Preloads
@@ -35,8 +35,6 @@ If a savestate have to be load before a tas, you can configure it in bizhawk/pre
 
 * Add input visualizer (like stepmania)
 * Add time splitter (like live split)
-* Add tests with luaunit
-* Add hook for luacheck and luaunit
 * Explain the whole process
   * start.lua for Bizhawk
   * the continuing reboot core process

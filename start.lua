@@ -34,9 +34,5 @@ while (true) do
         joypad.set(joypadSet[fc])
     end
 
-    if(config['doSaveStateAt'] ~= nil and config['saveSlot'] ~= nil and fc == config['doSaveStateAt']) then
-        savestate.saveslot(config['saveSlot'])
-    end
-
     emu.frameadvance()
 end

@@ -1,6 +1,7 @@
 ## First of all
 
-    Copy the archive tas-scaffolding.tar.gz into your project.
+    Copy the archive tas-scaffolding.tar.gz into your project
+    (ex: cp tas-scaffolding.tar.gz ../tas-your-game && cd tas-your-game)
     Then uncompress it (tar zxvf tas-scaffolding.tar.gz) 
 
 ## Installation
@@ -26,6 +27,11 @@
 
     # There is a default text in the README of your new project.
     # Update it with the minimum information you have. 
+
+## Update the Makefile
+
+    # You can remove the tasks into the section for the scaffolding
+    # and the big section comments
 
 ## Operations if Bizhawk's OS and your OS are not the same
 

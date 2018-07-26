@@ -1,7 +1,3 @@
-# ### ### ### ### ### ### ### ### ### ### ### #
-# Section for the scaffolding and the new TAS #
-# ### ### ### ### ### ### ### ### ### ### ### #
-
 install:
 	luarocks install mediator_lua --tree lua_modules
 	luarocks install luafilesystem --tree lua_modules

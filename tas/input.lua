@@ -54,6 +54,50 @@ local Input = setmetatable(
                     return self.add(frame, iterations, { [currentPlayer .. ' Down'] = true })
                 end,
 
+                upLeft = function(self, frame, iterations)
+                    return self.add(
+                        frame,
+                        iterations,
+                        {
+                            [currentPlayer .. ' Up'] = true,
+                            [currentPlayer .. ' Left'] = true,
+                        }
+                    )
+                end,
+
+                upRight = function(self, frame, iterations)
+                    return self.add(
+                        frame,
+                        iterations,
+                        {
+                            [currentPlayer .. ' Up'] = true,
+                            [currentPlayer .. ' Right'] = true,
+                        }
+                    )
+                end,
+
+                downLeft = function(self, frame, iterations)
+                    return self.add(
+                        frame,
+                        iterations,
+                        {
+                            [currentPlayer .. ' Down'] = true,
+                            [currentPlayer .. ' Left'] = true,
+                        }
+                    )
+                end,
+
+                downRight = function(self, frame, iterations)
+                    return self.add(
+                        frame,
+                        iterations,
+                        {
+                            [currentPlayer .. ' Down'] = true,
+                            [currentPlayer .. ' Right'] = true,
+                        }
+                    )
+                end,
+
                 select = function(self, frame, iterations)
                     return self.add(frame, iterations, { [currentPlayer .. ' Select'] = true })
                 end,

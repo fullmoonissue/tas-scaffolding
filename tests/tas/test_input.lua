@@ -18,6 +18,10 @@ function testQueuedInputs()
     input:l2(12)
     input:r1(13)
     input:r2(14)
+    input:upLeft(15)
+    input:upRight(16)
+    input:downLeft(17)
+    input:downRight(18)
     lu.assertEquals(
         {
             [1] = {
@@ -61,6 +65,22 @@ function testQueuedInputs()
             },
             [14] = {
                 ['P5 R2'] = true,
+            },
+            [15] = {
+                ['P5 Up'] = true,
+                ['P5 Left'] = true,
+            },
+            [16] = {
+                ['P5 Up'] = true,
+                ['P5 Right'] = true,
+            },
+            [17] = {
+                ['P5 Down'] = true,
+                ['P5 Left'] = true,
+            },
+            [18] = {
+                ['P5 Down'] = true,
+                ['P5 Right'] = true,
             },
         },
         input.all()

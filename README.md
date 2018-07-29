@@ -20,6 +20,13 @@ Here are some points to clarify to understand some choices made in this project 
 * Problem : Method require on different OS & package.preload & . in folder's name
     * The mediator.lua file (from the mediator_lua library) is copied to the root of the TAS
 
+## Read the inputs
+
+    # Example with Bizhawk running on Windows under Parallels (Mac)
+    cd Desktop
+    ln -s /path/to/tas-of-your-game/start.lua start-your-game.lua
+    BizHawk > Tool > Lua Console > Desktop/start-your-game.lua
+
 ## Preloads
 
 If a savestate have to be load before a tas, you can configure it in bizhawk/preloads.lua
@@ -33,9 +40,12 @@ If a savestate have to be load before a tas, you can configure it in bizhawk/pre
 
 ## Todo
 
-* Add input visualizer (like stepmania)
-* Add time splitter (like live split)
 * Explain the whole process
   * start.lua for Bizhawk
   * the continuing reboot core process
   * config.lua playground
+
+## Bonus
+
+* Add an input visualizer (like stepmania)
+* Add a tool to speedrun games (preloads + a little time splitter)

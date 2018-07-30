@@ -72,35 +72,35 @@ It takes care of adding a file (which have for skeleton the file located in
 
 A file (full of inputs), looks like this :
 
-    Example (any%/0-init.lua) :
+    Example (tas/any%/0-init.lua) :
     local input = require('tas/input')()
     input:select(2450)
     input:cross(3200, 5)
     
     return input:all()
 
-All inputs have to be written with methods which represents a "button" in the joypad.
+All wanted inputs will be written with methods which represents a "button" in the joypad.
 
-But, to get the list of files for a particular TAS, a scan have to be done. Two methods
-exist :
+But, to get the list of files for a particular TAS, a scan of all required files have to be
+done. Two methods exist :
 
 * Using io.popen and execute `/bin/ls`
-* Using lfs and the `dir` method
+* Using [lfs](https://github.com/keplerproject/luafilesystem) and the `dir` method
 
 None of these options can be used because :
 
 * BizHawk forbid the method io.popen
-* When you `luarocks install lfs`, switch your OS, you will have a .so or a .dll file.
+* When you `luarocks install lfs`, switch your OS, you will have a .so file or not.
 
 Lfs is still used in the project but only for the host OS (not for BizHawk's running OS).
 
-To fix the listing issue, a make task use lfs to scan the files and write the listing into
-a file. This file will be read as the "real" listing of files without properly scanning.
+To fix the listing issue, a make task use lfs to scan the folders and write the listing into
+a file. This file will be read as the "real" listing of files without properly doing a scan.
 This one is called files.lua (in the bizhawk folder) and the make task to call is :
 `make bizhawk-lfs`
 
 So, the current (categorized) TAS have to be set to know which inputs have to be played.
-This value is located in the file config.lua at the root of the tas.
+This value is located in the file config.lua at the root of the tas project.
 
     Example (in config.lua) :
     local currentTas = 'any%'
@@ -184,7 +184,9 @@ An overlay is information displayed on the screen with a style, like :
 
 The library [mediator_lua](https://github.com/Olivine-Labs/mediator_lua) is used (installed
 by `make install`) but to avoid cross OS library preloading problem, the core file of the
-mediator is copied at the root of your TAS.
+mediator is copied at the root of your TAS (during the scaffolding).
+
+The overlay which display the current frame will be already displayed.
 
 #### Archive bk2
 
@@ -192,16 +194,17 @@ mediator is copied at the root of your TAS.
 
 One of the 5 files of the archive is "Input Log.txt" which is a representation of your inputs.
 
-So, to "translate" the lua inputs into BizHawk inputs, a make task allows it, ex :
+So, to "translate" the lua inputs into BizHawk inputs, the make task to do it is
 `make TAS=any% bizhawk-dump` (a folder by TAS will be created in the bizhawk folder).
 
 #### Preloads
 
 If a savestate (as a file, not a slot) have to be load before a tas :
 
-* Place your savestate into bizhawk/savestate
-* Fill the lua table in bizhawk/preloads.lua like this :
+* Place your savestate into `bizhawk/savestate`
+* Fill the lua table in `bizhawk/preloads.lua`
 
+The file `bizhawk/preloads.lua` will looks like this :
 
     return {
         ['any%'] = 'the-savestate-any',

@@ -1,5 +1,4 @@
-local Input = require('tas/input')
-local input = Input()
+local input = require('tas/input')()
 
 local MacroCollection = setmetatable(
     {
@@ -8,7 +7,7 @@ local MacroCollection = setmetatable(
     {
         __call = function()
             return {
-                -- Add your macros here (check templates)
+                -- Add your macros here
             }
         end
     }

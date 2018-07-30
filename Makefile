@@ -1,9 +1,5 @@
 .DEFAULT_GOAL := install
 
-install:
-	luarocks install mediator_lua --tree lua_modules
-	luarocks install luafilesystem --tree lua_modules
-
 build-scaffolding:
 	@if [ '$(TAS_FOLDER)' == '' ]; then \
         echo "Call : make TAS_FOLDER=/path/to/tas build-scaffolding"; \
@@ -19,11 +15,16 @@ build-scaffolding:
 	cd $(TAS_FOLDER) && mv config.lua.dist config.lua
 	cd $(TAS_FOLDER) && mv templates/README.md README.md
 	cd $(TAS_FOLDER) && mv templates/Makefile Makefile
+	cd $(TAS_FOLDER) && mv templates/.gitignore .gitignore
 	cd $(TAS_FOLDER) && make install
 	cd $(TAS_FOLDER) && cp lua_modules/share/lua/5.3/mediator.lua mediator.lua
 
 check:
 	luacheck --std=min+bizhawk bizhawk tas templates paths.lua start.lua
+
+install:
+	luarocks install mediator_lua --tree lua_modules
+	luarocks install luafilesystem --tree lua_modules
 
 install-dev:
 	luarocks install luacheck

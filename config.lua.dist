@@ -1,4 +1,4 @@
--- Savestate's slot to load when the script is (re)loaded
+-- Savestate's slot to load when BizHawk is rebooted
 -- Requirements : have to be an integer between 0 and 9
 local loadSlot = nil
 

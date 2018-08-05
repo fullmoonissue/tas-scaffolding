@@ -15,7 +15,8 @@ You can assign the inputs to "push" to BizHawk by passing a lua table to his `jo
     Example :
     joypad.set({['P1 Start'] = true})
 
-So, the goal is to create a huge lua table which will have a frame as key and inputs as value.
+So, the goal is to create a huge lua table which will contains all inputs.
+These one will have frame as key and inputs as value like this.
 
     Example :
     local joypadSet = {
@@ -75,13 +76,17 @@ A file (full of inputs), looks like this :
     Example (tas/any%/0-init.lua) :
     local input = require('tas/input')()
     input:select(2450)
-    input:cross(3200, 5)
+    local currentFrame = input:cross(3200, 5)
+    input:square(currentFrame + 6)
     
     return input:all()
 
-All wanted inputs will be written with methods which represents a "button" in the joypad.
+All wanted inputs will be written with methods which represents a "button" in the joypad (up, down,
+square, triangle, ...).
 
-But, to get the list of files for a particular TAS, a scan of all required files have to be
+OK, but !
+
+To get the list of files for a particular TAS, a scan of all required files have to be
 done. Two methods exist :
 
 * Using io.popen and execute `/bin/ls`
@@ -96,7 +101,7 @@ Lfs is still used in the project but only for the host OS (not for BizHawk's run
 
 To fix the listing issue, a make task use lfs to scan the folders and write the listing into
 a file. This file will be read as the "real" listing of files without properly doing a scan.
-This one is called files.lua (in the bizhawk folder) and the make task to call is :
+This one is called files.lua (in the bizhawk folder) and the make task to do this listing is :
 `make bizhawk-lfs`
 
 So, the current (categorized) TAS have to be set to know which inputs have to be played.
@@ -186,7 +191,7 @@ The library [mediator_lua](https://github.com/Olivine-Labs/mediator_lua) is used
 by `make install`) but to avoid cross OS library preloading problem, the core file of the
 mediator is copied at the root of your TAS (during the scaffolding).
 
-The overlay which display the current frame will be already displayed.
+The overlay which display the current frame will be already created and displayed.
 
 #### Archive bk2
 
@@ -210,6 +215,11 @@ The file `bizhawk/preloads.lua` will looks like this :
         ['any%'] = 'the-savestate-any',
         ['100%'] = 'the-savestate-100',
     }
+
+#### RAM Watch
+
+You can put your .wch file into the folder bizhawk/ram-watch. In the template of your tas
+project's README.md, a section is already placed waiting for some useful memory addresses.
 
 ## Tests & Development
 

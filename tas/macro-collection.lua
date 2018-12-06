@@ -1,4 +1,4 @@
-local input = require('tas/input')()
+local input = require('bizhawk/input')()
 
 local MacroCollection = setmetatable(
     {

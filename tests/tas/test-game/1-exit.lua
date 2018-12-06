@@ -1,4 +1,4 @@
-local input = require('tas/input')()
+local input = require('bizhawk/input')()
 
 input:select(3)
 

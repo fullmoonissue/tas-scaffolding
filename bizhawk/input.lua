@@ -38,6 +38,8 @@ local Input = setmetatable(
                     return currentFrame
                 end,
 
+                -- Begin of atomic buttons
+
                 up = function(self, frame, iterations)
                     return self.add(frame, iterations, { [currentPlayer .. ' Up'] = true })
                 end,
@@ -137,6 +139,8 @@ local Input = setmetatable(
                 r2 = function(self, frame, iterations)
                     return self.add(frame, iterations, { [currentPlayer .. ' R2'] = true })
                 end,
+
+                -- End of atomic buttons
             }
         end
     }

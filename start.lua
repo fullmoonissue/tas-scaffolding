@@ -2,7 +2,7 @@ local config = require('config')
 local paths = require('paths')
 
 -- Retrieve the inputs of the current tas
-local joypadSet = require('tas/dump')().fromLuaFilesToLuaInputs(
+local joypadSet = require('bizhawk/dump')().fromLuaFilesToLuaInputs(
     paths['tas'],
     require(paths['files']),
     config['currentTas']

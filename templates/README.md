@@ -1,21 +1,45 @@
-# TAS of ...game...
+# TAS ...category... of ...game...
 
-This TAS was build from the [tas-scaffolding project](https://github.com/fullmoonissue/tas-scaffolding).
+_Presentation of the game_
 
-## Emulator used
+_Links to the videos (youtube, nicovideo, ...)_
 
-[BizHawk](https://github.com/TASVideos/BizHawk), version X.Y.Z
+_About the run_
 
-## Memory address
+* Emulator used : BizHawk X.Y.Z
+* TAS Scaffolding Project used : Version [X.Y.Z](https://github.com/fullmoonissue/tas-scaffolding/tree/X.Y.Z)
+* Code source (add a link if the project is publicly available)
+* Other ideas :
+  * 1 / 2 / 4 players
+  * Easy / Normal / Hard difficulty
+  * Aims for maximum score
+  * Aims for fastest time
+  * Takes damage and abuses death to save time
+  * Abuses programming errors
+  * Manipulates luck
+  * Entertains without sacrificing Frames
+  * Game version
+  * Game genre
+  * Other list here (http://tasvideos.org/Movies.html -> Movies by category)
 
-    Coming soon
+_Gameplay_
 
-## TAS of ...category...
+_Comments_
 
-This is the ...category... TAS of ...game....
+_Weapons_
 
-**...TAS description...**
+_Tricks and Glitches_
 
-### Publication
+_Routing_
 
-_Coming soon_
+_Stage by stage comments_
+
+_Known Improvements_
+
+_Possible Improvements_
+
+_Special Thanks_
+
+_Screenshot Suggestions_
+
+_Useful RAM Watch Addresses_

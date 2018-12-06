@@ -1,5 +1,5 @@
 local lu = require('luaunit')
-local dump = require('tas/dump')()
+local dump = require('bizhawk/dump')()
 
 function testFromLuaFilesToLuaInputs()
     lu.assertEquals(

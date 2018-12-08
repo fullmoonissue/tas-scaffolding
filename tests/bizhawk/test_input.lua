@@ -1,5 +1,5 @@
 local lu = require('luaunit')
-local input = require('tas/input')()
+local input = require('bizhawk/input')()
 
 function testQueuedInputs()
     input.reset()

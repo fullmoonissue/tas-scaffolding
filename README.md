@@ -1,24 +1,46 @@
 # TAS Scaffolding
 
+## Usage
+
+    # Clone
+    git clone https://github.com/fullmoonissue/tas-scaffolding.git
+    cd tas-scaffolding
+    
+    # Build
+    mkdir /path/to/your/tas
+    make TAS_FOLDER=/path/to/your/tas build-scaffolding
+    
+    # Create your tas
+    cd /path/to/your/tas
+    make help (to see tasks you can do)
+    
+    => Open your tas project with your favorite IDE and update the README.md
+    => It's easier to add a new file to your tas by using the `make register` task
+    => Good luck !
+
 ## Explanation
 
-This project aims to help creating a TAS running on
-[BizHawk](https://github.com/TASVideos/BizHawk).
+This project aims to help creating a TAS running on [BizHawk](https://github.com/TASVideos/BizHawk).
 
-    /!\ Warning /!\
+### Warning
+
     This project was created with the following configuration :
-    * Code running on Mac OS
+    * Code running on MacOS
     * BizHawk running on Windows 10 (with Parallels)
 
-You can assign the inputs to "push" to BizHawk by passing a lua table to his `joypad`.
+### Introduction
+
+You can assign the inputs to send to BizHawk by passing a lua table to his `joypad`.
 
     Example :
+    
     joypad.set({['P1 Start'] = true})
 
-So, the goal is to create a huge lua table which will contains all inputs.
-These one will have frame as key and inputs as value like this.
+So, the goal is to create a huge lua table which will contains all the inputs for a tas.
+These table will have frame as key and inputs as value.
 
     Example :
+    
     local joypadSet = {
         [2450] = {['P1 Select'] = true},
         [3200] = {['P1 Cross'] = true, ['P1 Square'] = true},
@@ -27,12 +49,13 @@ These one will have frame as key and inputs as value like this.
 Inputs will be played at the wanted frame during the infinite loop calling the frame advance.
 
     Example :
+    
     local joypadSet = {[2450] = {['P1 Select'] = true}}
     while (true) do
         -- Retrieve the current frame ...
         local fc = emu.framecount()
     
-        -- ... and "push" the inputs (if inputs are set for this frame)
+        -- ... and send the inputs to BizHawk (if inputs are set for this frame)
         if(joypadSet[fc]) then
             joypad.set(joypadSet[fc])
         end
@@ -40,10 +63,11 @@ Inputs will be played at the wanted frame during the infinite loop calling the f
         emu.frameadvance()
     end
 
-The huge lua table is build by the concatenation of lua tables coming from multiple files
-(in order to split inputs into multiple files, it's a cleaner way).
+The huge lua table can be build by the concatenation of lua tables coming from multiple files
+(it's a cleaner way that having all in one file).
 
     Example (of file naming) :
+    
     0-init.lua
     1-level-1-the-intro.lua
     ...
@@ -52,42 +76,53 @@ The huge lua table is build by the concatenation of lua tables coming from multi
     ==> Here, the files start with an integer to sort them naturally
 
 These files are into a folder which represents the category of the TAS (so, multiple tas
-for the same game is possible) into the tas folder (in the root of the project).
+for the same game is possible) into the tas/categories folder.
 
-    Example (of tree of folder) :
+    Example :
+    
     tas
-      |
-      -> any%
         |
-        -> 0-init.lua
-        -> ...
-      |
-      -> 100%
-        |
-        -> 0-init.lua
-        -> ...
+        -> categories
+            |
+            -> any%
+              |
+              -> 0-init.lua
+              -> ...
+            |
+            -> 100%
+              |
+              -> 0-init.lua
+              -> ...
 
-You can add a new file by executing a make task like `make TAS=any% FILE=0-init.lua register`.
+You can add a new file by executing a `make` task like `make TAS=any% FILE=0-init.lua register`.
 It takes care of adding a file (which have for skeleton the file located in
-`templates/new-tas-file.lua`) and update the listing of the files (explained just after).
+`templates/new-tas-file.lua`) and update the listing of the files that have to be load
+(explained in Technical difficulties).
 
-A file (full of inputs), looks like this :
+A tas file (full of inputs), looks like this :
 
-    Example (tas/any%/0-init.lua) :
-    local input = require('tas/input')()
+    Example (tas/categories/any%/0-init.lua) :
+    
+    local input = require('bizhawk/input')()
+    
+    -- Push, during 1 frame, the Select button on frame 2450
     input:select(2450)
+    
+    -- Push, during 5 frames, the Cross button from the frame 3200
+    -- And retrieve the number of the frame after that
     local currentFrame = input:cross(3200, 5)
+    
+    -- Push, during 1 frame, the Square button 6 frames after the previous action
+    -- (because the variable currentFrame is set after the previous action)
     input:square(currentFrame + 6)
+    
+    -- ... a lot of other inputs inserted here ...
     
     return input:all()
 
-All wanted inputs will be written with methods which represents a "button" in the joypad (up, down,
-square, triangle, ...).
+### Technical difficulties
 
-OK, but !
-
-To get the list of files for a particular TAS, a scan of all required files have to be
-done. Two methods exist :
+To get the list of files for a particular TAS, a scan into the folder have to be done. Two methods exist :
 
 * Using io.popen and execute `/bin/ls`
 * Using [lfs](https://github.com/keplerproject/luafilesystem) and the `dir` method
@@ -95,59 +130,97 @@ done. Two methods exist :
 None of these options can be used because :
 
 * BizHawk forbid the method io.popen
-* When you `luarocks install lfs`, switch your OS, you will have a .so file or not.
+* When you launch `luarocks install lfs`, switch your OS, you will have a .so file or not (so not reliable).
 
 Lfs is still used in the project but only for the host OS (not for BizHawk's running OS).
 
-To fix the listing issue, a make task use lfs to scan the folders and write the listing into
+To fix the listing issue, a `make` task use lfs to scan the folders and write the listing into
 a file. This file will be read as the "real" listing of files without properly doing a scan.
-This one is called files.lua (in the bizhawk folder) and the make task to do this listing is :
-`make bizhawk-lfs`
+This one is `bizhawk/files.lua` and the `make` task to do this listing is : `make bizhawk-lfs`
 
-So, the current (categorized) TAS have to be set to know which inputs have to be played.
-This value is located in the file config.lua at the root of the tas project.
+### Installation
 
-    Example (in config.lua) :
-    local currentTas = 'any%'
+At this point, you are able to create a TAS, here are the steps :
 
-At this point, you are able to create a TAS, here are the sequences to go for it :
-
-    - Go to your project's folder
-    $ cd /path/to/projects
+    - Go to your working directory
+    $ cd /path/to/your/projects
     
-    - Git clone this project
+    - Clone this project
     $ git clone https://github.com/fullmoonissue/tas-scaffolding.git
+    
+    - Go into it
     $ cd tas-scaffolding
     
     - Create the folder where your TAS will be
-    $ mkdir /path/to/projects/tas-of-my-game
+    $ mkdir /path/to/your/projects/tas-of-your-game
     
     - Call the task `build-scaffolding` to build the structure of your TAS project
-    $ make TAS_FOLDER=/path/to/projects/tas-of-my-game build-scaffolding
+    $ make TAS_FOLDER=/path/to/your/projects/tas-of-your-game build-scaffolding
     
     - Go to your TAS project
-    $ cd /path/to/projects/tas-of-my-game
+    $ cd /path/to/your/projects/tas-of-your-game
     
-    - Let's say you'll make the any%, update the value of currentTas in config.lua
-    $ vi config.lua (or update the file with your favorite IDE)
+    - Let's say you'll make the any%, update the value of currentTas (with vi or your in your IDE)
+    $ vi config.lua (local currentTas = 'any%')
     - In this same file, you can assign the savestate slot which will be loaded
     when Bizhawk will be rebooted, let's say you will load the slot 0 after reboot
-    $ vi config.lua (and update the value of loadSlot to 0)
+    $ vi config.lua (local loadSlot = 0)
     
     - Launch the Lua Console of BizHawk on the start.lua file
-    BizHawk > Tool > Lua Console > /path/to/projects/tas-of-my-game/start.lua
+    BizHawk > Tool > Lua Console > /path/to/your/projects/tas-of-your-game/start.lua
     
     - Register a new TAS file (ex : 0-init.lua)
     $ make TAS=any% FILE=0-init.lua register
     
     - Add / Update some inputs
-    $ vi tas/any%/0-init.lua
+    $ vi tas/categories/any%/0-init.lua
     
     - Reboot BizHawk
     BizHawk > Emulation > Reboot Core
     
-    => Here you are. You will alternate with inputs updated and BizHawk rebooted.
-    Then add a new file and repeat the process until your TAS is done.
+    => Here you are. You will alternate with inputs updated, BizHawk rebooted and put some savestate.
+    
+    Finally, add new files for the tas and repeat the process until your tas is done.
+
+### Summary of the folders' structure
+
+    tas-scaffolding
+        |
+        -> bizhawk
+            |
+            -> dump (Export of your tas ; From lua tables to the Input Log.txt file [cf Archive bk2])
+            |
+            -> ram-watch (Location of your RAM Watch files ; Extension : .wch)
+            |
+            -> savestate (Location of your savestates as file)
+            |
+            -> dump.lua (Tool to dump various contents)
+            |
+            -> files.lua (Lua table which contains all the files to load by tas)
+            |
+            -> input.lua (Tool to add a new input to send to Bizhawk)
+            |
+            -> preloads.lua (Lua table which contains the savestate to load before a certain tas)
+        |
+        -> scripts (Location of your own scripts)
+        |
+        -> tas
+            |
+            -> categories (Location of your tas by category like any%, 100%, ...)
+            |
+            -> macro-collection.lua (Location where you will add your own macro)
+            |
+            -> overlay-collection.lua (Location where you will add your own overlay)
+        |
+        -> templates
+            |
+            -> .gitignore (For your tas project after scaffolding)
+            |
+            -> Makefile (For your tas project after scaffolding)
+            |
+            -> new-tas-file.lua (Template of a new file added by the `make` task to register a new one [in your tas])
+            |
+            -> README.md (For your tas project after scaffolding)
 
 ## Plugins
 
@@ -158,6 +231,7 @@ Some additional goodies are present, here they are :
 The file `tas/macro-collection.lua` allows you to put a collection of inputs under a function.
 
     Example 1 :
+    
     example_without_custom_inputs = function(currentFrame)
         input:right(currentFrame)
         currentFrame = currentFrame + 2
@@ -167,6 +241,7 @@ The file `tas/macro-collection.lua` allows you to put a collection of inputs und
     end
     
     Example 2 :
+    
     example_with_custom_inputs = function(currentFrame, iterations)
         return input:add(
             currentFrame,
@@ -189,18 +264,19 @@ An overlay is information displayed on the screen with a style, like :
 
 The library [mediator_lua](https://github.com/Olivine-Labs/mediator_lua) is used (installed
 by `make install`) but to avoid cross OS library preloading problem, the core file of the
-mediator is copied at the root of your TAS (during the scaffolding).
+mediator, `mediator.lua`, is copied at the root of your TAS (during the scaffolding).
 
-The overlay which display the current frame will be already created and displayed.
+The overlay which display the current frame is already created and displayed by default.
 
 #### Archive bk2
 
-[Associated documentation](http://tasvideos.org/Bizhawk/BK2Format.html).
+[Associated documentation](http://tasvideos.org/Bizhawk/BK2Format.html)
 
-One of the 5 files of the archive is "Input Log.txt" which is a representation of your inputs.
+One of the 5 files of the archive is `Input Log.txt` which is a representation of your inputs.
 
-So, to "translate" the lua inputs into BizHawk inputs, the make task to do it is
-`make TAS=any% bizhawk-dump` (a folder by TAS will be created in the bizhawk folder).
+So, to "translate" the lua inputs into BizHawk inputs, the `make` task to do it is `make TAS=any% bizhawk-dump`.
+
+After that, your text file will be located in `bizhawk/dump/any%`.
 
 #### Preloads
 
@@ -209,33 +285,30 @@ If a savestate (as a file, not a slot) have to be load before a tas :
 * Place your savestate into `bizhawk/savestate`
 * Fill the lua table in `bizhawk/preloads.lua`
 
-The file `bizhawk/preloads.lua` will looks like this :
+The file `bizhawk/preloads.lua` have to look like this :
 
     return {
-        ['any%'] = 'the-savestate-any',
-        ['100%'] = 'the-savestate-100',
+        ['any%'] = 'the-savestate-file-for-any%',
+        ['100%'] = 'the-savestate-file-for-100%',
     }
 
 #### RAM Watch
 
-You can put your .wch file into the folder bizhawk/ram-watch. In the template of your tas
-project's README.md, a section is already placed waiting for some useful memory addresses.
+You can put your .wch file into the folder bizhawk/ram-watch.
 
-## Tests & Development
+## Development & Tests
 
-    # Dependencies
-    make install
-    
     # Dev dependencies, "sudo" right might be asked
-    make install-dev
+    make install
 
     # Check code style
-    make check
+    make cs-check
     
     # Tests
     make test
 
 ## Todo (bonus)
 
-* Add an input visualizer (like stepmania)
-* Add a tool to speedrun games (preloads + a little time splitter)
+* Create tas files from an existant BizHawk's Input Log.txt file
+* Add a little time splitter (in addition to the preloads) to help to exercice in speedrunning
+* Dump a diff of the memory between a range of frames

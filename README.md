@@ -252,6 +252,12 @@ The file `tas/macro-collection.lua` allows you to put a collection of inputs und
             }
         )
     end
+    
+    Call in your tas file :
+    
+    local macro = require('tas/macro-collection')()
+    macro.example_without_custom_inputs(1525)
+    macro.example_with_custom_inputs(3000, 7)
 
 #### Overlay
 
@@ -311,4 +317,4 @@ You can put your .wch file into the folder bizhawk/ram-watch.
 
 * Create tas files from an existant BizHawk's Input Log.txt file
 * Add a little time splitter (in addition to the preloads) to help to exercice in speedrunning
-* Dump a diff of the memory between a range of frames
+* Dump a diff of the memory between a range of frames or between two frames

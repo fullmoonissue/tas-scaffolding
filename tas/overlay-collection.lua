@@ -1,5 +1,6 @@
 local OverlayCollection = setmetatable(
     {
+        client = client,
         gui = gui,
         memory = memory,
     },

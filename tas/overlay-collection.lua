@@ -1,8 +1,9 @@
-local OverlayCollection = setmetatable(
+-- List of Lua functions available for BizHawk
+-- http://tasvideos.org/Bizhawk/LuaFunctions.html#tabber
+
+return setmetatable(
     {
-        client = client,
         gui = gui,
-        memory = memory,
     },
     {
         __call = function()
@@ -23,5 +24,3 @@ local OverlayCollection = setmetatable(
         end
     }
 )
-
-return OverlayCollection

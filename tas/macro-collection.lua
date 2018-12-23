@@ -1,8 +1,6 @@
-local input = require('bizhawk/input')()
-
-local MacroCollection = setmetatable(
+return setmetatable(
     {
-        input = input,
+        input = require('bizhawk/input')(),
     },
     {
         __call = function()
@@ -12,5 +10,3 @@ local MacroCollection = setmetatable(
         end
     }
 )
-
-return MacroCollection

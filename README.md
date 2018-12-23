@@ -313,8 +313,9 @@ You can put your .wch file into the folder bizhawk/ram-watch.
     # Tests
     make test
 
-## Todo (bonus)
+## Todo
 
+* Split plugins into folders (stop mixing all together)
 * Create tas files from an existant BizHawk's Input Log.txt file
 * Add a little time splitter (in addition to the preloads) to help to exercice in speedrunning
 * Dump a diff of the memory between a range of frames or between two frames

@@ -2,7 +2,9 @@
 
 *Presentation of the game*
 
-*Publication Work in Progress*
+*Publication*
+
+_Work in Progress_
 
 *About the run*
 

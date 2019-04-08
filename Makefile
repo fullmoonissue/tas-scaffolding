@@ -5,6 +5,7 @@ build-scaffolding: ## [Build] Launch the scaffolding
         echo "Call : make TAS_FOLDER=/path/to/your/tas build-scaffolding"; \
         exit 1; \
     fi
+	[ -d $(TAS_FOLDER) ] || mkdir $(TAS_FOLDER)
 	rm -f tas-scaffolding.tar.gz
 	touch tas-scaffolding.tar.gz
 	tar -zcf tas-scaffolding.tar.gz --exclude=tas-scaffolding.tar.gz -X .tarignore .
@@ -13,18 +14,19 @@ build-scaffolding: ## [Build] Launch the scaffolding
 	cd $(TAS_FOLDER) \
 	    && tar zxvf tas-scaffolding.tar.gz \
 	    && rm -f tas-scaffolding.tar.gz \
-	    && mv config.lua.dist config.lua \
-	    && mv templates/README.md README.md \
-	    && mv templates/Makefile Makefile \
-	    && mv templates/.gitignore .gitignore \
+	    && mv configuration/play.lua.dist configuration/play.lua \
+	    && mv assets/templates/README.md README.md \
+	    && mv assets/templates/Makefile Makefile \
+	    && mv assets/templates/.gitignore .gitignore \
 	    && make install \
 	    && cp lua_modules/share/lua/5.3/mediator.lua mediator.lua
 
 cs-check: ## [CS] Launch the check of the code style
-	luacheck --std=min+bizhawk bizhawk tas templates paths.lua start.lua
+	luacheck --std=min+bizhawk assets/templates/new-tas-file.lua configuration core plugins scripts tas start.lua
 
 help:
-	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
+	| awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 install: ## [Install] In project and global dependencies (for development purpose)
 	luarocks install luafilesystem --tree lua_modules
@@ -32,5 +34,5 @@ install: ## [Install] In project and global dependencies (for development purpos
 	luarocks install luaunit
 
 test: ## [Tests] Launch them all
-	lua tests/bizhawk/test_dump.lua -v
-	lua tests/bizhawk/test_input.lua -v
+	lua tests/core/test_dump.lua -v
+	lua tests/core/test_input.lua -v

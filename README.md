@@ -76,34 +76,32 @@ The huge lua table can be build by the concatenation of lua tables coming from m
     ==> Here, the files start with an integer to sort them naturally
 
 These files are into a folder which represents the category of the TAS (so, multiple tas
-for the same game is possible) into the tas/categories folder.
+for the same game is possible) into the tas folder.
 
     Example :
     
     tas
         |
-        -> categories
-            |
-            -> any%
-              |
-              -> 0-init.lua
-              -> ...
-            |
-            -> 100%
-              |
-              -> 0-init.lua
-              -> ...
+        -> any%
+          |
+          -> 0-init.lua
+          -> ...
+        |
+        -> 100%
+          |
+          -> 0-init.lua
+          -> ...
 
 You can add a new file by executing a `make` task like `make TAS=any% FILE=0-init.lua register`.
 It takes care of adding a file (which have for skeleton the file located in
-`templates/new-tas-file.lua`) and update the listing of the files that have to be load
+`assets/templates/new-tas-file.lua`) and update the listing of the files that have to be load
 (explained in Technical difficulties).
 
 A tas file (full of inputs), looks like this :
 
-    Example (tas/categories/any%/0-init.lua) :
+    Example (tas/any%/0-init.lua) :
     
-    local input = require('bizhawk/input')()
+    local input = require('core/input')()
     
     -- Push, during 1 frame, the Select button on frame 2450
     input:select(2450)
@@ -136,7 +134,7 @@ Lfs is still used in the project but only for the host OS (not for BizHawk's run
 
 To fix the listing issue, a `make` task use lfs to scan the folders and write the listing into
 a file. This file will be read as the "real" listing of files without properly doing a scan.
-This one is `bizhawk/files.lua` and the `make` task to do this listing is : `make bizhawk-lfs`
+This one is `configuration/files.lua` and the `make` task to do this listing is : `make bizhawk-lfs`
 
 ### Installation
 
@@ -161,10 +159,10 @@ At this point, you are able to create a TAS, here are the steps :
     $ cd /path/to/your/projects/tas-of-your-game
     
     - Let's say you'll make the any%, update the value of currentTas (with vi or your in your IDE)
-    $ vi config.lua (local currentTas = 'any%')
+    $ vi configuration/play.lua (local currentTas = 'any%')
     - In this same file, you can assign the savestate slot which will be loaded
     when Bizhawk will be rebooted, let's say you will load the slot 0 after reboot
-    $ vi config.lua (local loadSlot = 0)
+    $ vi configuration/play.lua (local loadSlot = 0)
     
     - Launch the Lua Console of BizHawk on the start.lua file
     BizHawk > Tool > Lua Console > /path/to/your/projects/tas-of-your-game/start.lua
@@ -173,7 +171,7 @@ At this point, you are able to create a TAS, here are the steps :
     $ make TAS=any% FILE=0-init.lua register
     
     - Add / Update some inputs
-    $ vi tas/categories/any%/0-init.lua
+    $ vi tas/any%/0-init.lua
     
     - Reboot BizHawk
     BizHawk > Emulation > Reboot Core
@@ -186,41 +184,59 @@ At this point, you are able to create a TAS, here are the steps :
 
     tas-scaffolding
         |
-        -> bizhawk
-            |
-            -> dump (Export of your tas ; From lua tables to the Input Log.txt file [cf Archive bk2])
+        -> assets
             |
             -> ram-watch (Location of your RAM Watch files ; Extension : .wch)
             |
-            -> savestate (Location of your savestates as file)
-            |
-            -> dump.lua (Tool to dump various contents)
+            -> templates
+                |
+                -> .gitignore (For your tas project after scaffolding)
+                |
+                -> Makefile (For your tas project after scaffolding)
+                |
+                -> new-tas-file.lua (Template of a new file added by the `make` task to register a new one [in your tas])
+                |
+                -> README.md (For your tas project after scaffolding)
+        |
+        -> configuration
             |
             -> files.lua (Lua table which contains all the files to load by tas)
             |
-            -> input.lua (Tool to add a new input to send to Bizhawk)
+            -> paths.lua (Lua table which contains all the paths to specific folders)
             |
-            -> preloads.lua (Lua table which contains the savestate to load before a certain tas)
+            -> play.lua.dist (Configuration file of the played tas)
+        |
+        -> core
+            |
+            -> dump.lua (Tool to dump various contents)
+            |
+            -> input.lua (Tool to add a new input to send to Bizhawk)
+        |
+        -> plugins
+            |
+            -> bizhawk
+                |
+                -> bk2 (Location of your .bk2 archive)
+                |
+                -> dump.lua (Tool to dump various contents)
+            |
+            -> macro
+                |
+                -> collection.lua (Location where you will add your own macro)
+            |
+            -> overlay
+                |
+                -> collection.lua (Location where you will add your own overlay)
+            |
+            -> preload
+                |
+                -> collection.lua (Lua table which contains the savestate to load before a certain tas)
+                |
+                -> savestate (Location of your savestates as file)
         |
         -> scripts (Location of your own scripts)
         |
-        -> tas
-            |
-            -> categories (Location of your tas by category like any%, 100%, ...)
-            |
-            -> macro-collection.lua (Location where you will add your own macro)
-            |
-            -> overlay-collection.lua (Location where you will add your own overlay)
-        |
-        -> templates
-            |
-            -> .gitignore (For your tas project after scaffolding)
-            |
-            -> Makefile (For your tas project after scaffolding)
-            |
-            -> new-tas-file.lua (Template of a new file added by the `make` task to register a new one [in your tas])
-            |
-            -> README.md (For your tas project after scaffolding)
+        -> tas (Location of your tas by category like any%, 100%, ...)
 
 ## Plugins
 
@@ -228,7 +244,7 @@ Some additional goodies are present, here they are :
 
 #### Macro
 
-The file `tas/macro-collection.lua` allows you to put a collection of inputs under a function.
+The file `plugins/macro/collection.lua` allows you to put a collection of inputs under a function.
 
     Example 1 :
     
@@ -255,13 +271,13 @@ The file `tas/macro-collection.lua` allows you to put a collection of inputs und
     
     Call in your tas file :
     
-    local macro = require('tas/macro-collection')()
+    local macro = require('plugins/macro/collection')()
     macro.example_without_custom_inputs(1525)
     macro.example_with_custom_inputs(3000, 7)
 
 #### Overlay
 
-The file `tas/overlay-collection.lua` allows you to put a collection of overlays.
+The file `plugins/overlay/collection.lua` allows you to put a collection of overlays.
 
 An overlay is information displayed on the screen with a style, like :
 
@@ -282,16 +298,16 @@ One of the 5 files of the archive is `Input Log.txt` which is a representation o
 
 So, to "translate" the lua inputs into BizHawk inputs, the `make` task to do it is `make TAS=any% bizhawk-dump`.
 
-After that, your text file will be located in `bizhawk/dump/any%`.
+After that, your text file will be located in `bizhawk/bk2/any%`.
 
 #### Preloads
 
 If a savestate (as a file, not a slot) have to be load before a tas :
 
-* Place your savestate into `bizhawk/savestate`
-* Fill the lua table in `bizhawk/preloads.lua`
+* Place your savestate into `plugins/preload/savestate`
+* Fill the lua table in `plugins/preload/collection.lua`
 
-The file `bizhawk/preloads.lua` have to look like this :
+The file `plugins/preload/collection.lua` have to look like this :
 
     return {
         ['any%'] = 'the-savestate-file-for-any%',
@@ -300,7 +316,7 @@ The file `bizhawk/preloads.lua` have to look like this :
 
 #### RAM Watch
 
-You can put your .wch file into the folder bizhawk/ram-watch.
+You can put your .wch file into the folder assets/ram-watch.
 
 ## Development & Tests
 
@@ -315,7 +331,11 @@ You can put your .wch file into the folder bizhawk/ram-watch.
 
 ## Todo
 
-* Split plugins into folders (stop mixing all together)
 * Create tas files from an existant BizHawk's Input Log.txt file
 * Add a little time splitter (in addition to the preloads) to help to exercice in speedrunning
-* Dump a diff of the memory between a range of frames or between two frames
+* Dump a diff of the memory between a range of frames or between two frames (client.saveram ?)
+* Add a screenshot plugin (which frame ; with OSD or not ; folder location)
+* Add some custom OSD (using client.SetGameExtraPadding ?)
+* Make a video about the usage of this project
+* Make some schemas in addition to the text in the README (using plantUML ?)
+* Try to create a form to merge all the plugins into a visual way (using sqlite ?)

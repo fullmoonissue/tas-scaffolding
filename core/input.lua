@@ -38,6 +38,21 @@ local Input = setmetatable(
                     return currentFrame
                 end,
 
+                -- Merge inputs from files
+                merge = function(files)
+                    local inputs = {}
+                    for _, file in ipairs(files) do
+                        if file ~= '.' and file ~= '..' then
+                            local importedInputs = require(file)
+                            for frame, bInputs in pairs(importedInputs) do
+                                inputs[frame] = bInputs
+                            end
+                        end
+                    end
+
+                    return inputs
+                end,
+
                 -- Begin of atomic buttons
 
                 up = function(self, frame, iterations)

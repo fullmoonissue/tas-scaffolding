@@ -1,5 +1,5 @@
 local lu = require('luaunit')
-local input = require('bizhawk/input')()
+local input = require('core/input')()
 
 function testQueuedInputs()
     input.reset()
@@ -145,6 +145,28 @@ function testCombinedInputs()
             },
         },
         input.all()
+    )
+end
+
+function testMerge()
+    input.reset()
+    lu.assertEquals(
+        {
+            [1] = {
+                ['P1 Cross'] = true,
+            },
+            [2] = {
+                ['P1 Cross'] = true,
+                ['P1 Start'] = true,
+            },
+            [3] = {
+                ['P1 Select'] = true,
+            },
+        },
+        input.merge({
+            'tests/tas/test-game/0-init',
+            'tests/tas/test-game/1-exit',
+        })
     )
 end
 

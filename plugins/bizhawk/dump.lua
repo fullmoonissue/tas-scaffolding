@@ -1,25 +1,10 @@
-local Dump = setmetatable(
+return setmetatable(
     {},
     {
         __call = function()
             return {
-                -- Create the table which brings all inputs split into multiple files
-                fromLuaFilesToLuaInputs = function(tasFolder, files, currentTas)
-                    local inputs = {}
-                    for _, file in ipairs(files[currentTas]) do
-                        if file ~= '.' and file ~= '..' then
-                            local importedInputs = require(tasFolder .. '/' .. currentTas .. '/' .. file)
-                            for frame, bInputs in pairs(importedInputs) do
-                                inputs[frame] = bInputs
-                            end
-                        end
-                    end
-
-                    return inputs
-                end,
-
-                -- Create the "Input Log.txt" content understand by BizHawk
-                fromLuaInputsToBizhawksLog = function(bjInputs)
+                -- Create the "Input Log.txt"
+                makeInputLogFile = function(bjInputs)
                     local orderedFrames = {}
                     for frame, _ in pairs(bjInputs) do
                         table.insert(orderedFrames, frame)
@@ -102,32 +87,7 @@ local Dump = setmetatable(
 
                     return table.concat(lines, "\n")
                 end,
-
-                -- Dump the listing of files asked for each tas
-                lfsForBizhawk = function(tasFolder)
-                    local lfs = require('lfs')
-                    local contents = { 'return {' }
-                    for folder in lfs.dir(tasFolder) do
-                        if folder ~= '.' and folder ~= '..' then
-                            local rTasFolder = tasFolder .. '/' .. folder
-                            if lfs.attributes(rTasFolder).mode == 'directory' then
-                                contents[#contents + 1] = '    [\'' .. folder .. '\'] = {'
-                                for file in lfs.dir(rTasFolder) do
-                                    if file ~= '.' and file ~= '..' then
-                                        contents[#contents + 1] = '        \'' .. string.gsub(file, '.lua', '') .. '\','
-                                    end
-                                end
-                                contents[#contents + 1] = '    },'
-                            end
-                        end
-                    end
-                    contents[#contents + 1] = '}'
-
-                    return table.concat(contents, "\n")
-                end,
             }
         end
     }
 )
-
-return Dump

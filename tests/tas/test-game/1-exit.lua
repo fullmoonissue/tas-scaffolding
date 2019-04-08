@@ -1,4 +1,4 @@
-local input = require('bizhawk/input')()
+local input = require('core/input')()
 
 input:select(3)
 

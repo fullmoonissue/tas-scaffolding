@@ -1,27 +1,32 @@
-local config = require('config')
-local paths = require('paths')
+local play = require('configuration/play')
+local currentTas = play['currentTas']
+local loadSlot = play['loadSlot']
+
+local paths = require('configuration/paths')
+
+local files = {}
+local cFiles = require('configuration/files')
+for _, file in ipairs(cFiles[currentTas]) do
+    files[#files + 1] = table.concat({paths['tas'], currentTas, file}, '/')
+end
 
 -- Retrieve the inputs of the current tas
-local joypadSet = require('bizhawk/dump')().fromLuaFilesToLuaInputs(
-    paths['tas'],
-    require(paths['files']),
-    config['currentTas']
-)
+local joypadSet = require('core/input')().merge(files)
 
 -- Preload a savestate, if exists
 local preloads = require(paths['preloads'])
-if(preloads[config['currentTas']] ~= nil) then
-    savestate.load(paths['savestate'] .. '/' .. preloads[config['currentTas']])
+if(preloads[currentTas] ~= nil) then
+    savestate.load(table.concat({paths['savestate'], preloads[currentTas]}, '/'))
 end
 
--- Load the current savestate, if exists
-if(config['loadSlot'] ~= nil) then
-    savestate.loadslot(config['loadSlot'])
+-- Load the current savestate, if defined and exists
+if(loadSlot ~= nil) then
+    savestate.loadslot(loadSlot)
 end
 
 -- Add overlays
 local mediator = require('mediator')()
-require('tas/overlay-collection')().applySubscriptions(mediator)
+require('plugins/overlay/collection')().applySubscriptions(mediator)
 
 while (true) do
     -- Retrieve the current frame ...

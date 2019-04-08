@@ -1,6 +1,6 @@
 return setmetatable(
     {
-        input = require('bizhawk/input')(),
+        input = require('core/input')(),
     },
     {
         __call = function()

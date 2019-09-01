@@ -7,7 +7,7 @@ local function process(tas, file, tasPath, tasFileTemplate)
     local c = f:read('*all')
     f:close()
 
-    f = io.open(table.concat({tasPath, tas, file}, '/'), 'w')
+    f = io.open(table.concat({ tasPath, tas, file }, '/'), 'w')
     f:write(c)
     f:close()
 end

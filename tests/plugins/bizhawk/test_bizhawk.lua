@@ -160,7 +160,7 @@ end
 function testLfsForBizhawk()
     lu.assertEquals(
         'return {' .. "\n"
-            .. '    [\'test-game\'] = {' .. "\n"
+            .. '    [\'any%\'] = {' .. "\n"
             .. '        \'0-init\',' .. "\n"
             .. '        \'1-exit\',' .. "\n"
             .. '    },' .. "\n"
@@ -169,4 +169,4 @@ function testLfsForBizhawk()
     )
 end
 
-os.exit( lu.LuaUnit.run() )
+os.exit(lu.LuaUnit.run())

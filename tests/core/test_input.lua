@@ -164,10 +164,10 @@ function testMerge()
             },
         },
         input.merge({
-            'tests/tas/test-game/0-init',
-            'tests/tas/test-game/1-exit',
+            'tests/tas/any%/0-init',
+            'tests/tas/any%/1-exit',
         })
     )
 end
 
-os.exit( lu.LuaUnit.run() )
+os.exit(lu.LuaUnit.run())

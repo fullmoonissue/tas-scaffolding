@@ -3,19 +3,19 @@
 local BizhawkDump = {}
 
 local function process(tas, cFilesPath, tasPath, archivesBk2Path)
-    local files = {};
-    local cFiles = require(cFilesPath);
+    local files = {}
+    local cFiles = require(cFilesPath)
     for _, file in ipairs(cFiles[tas]) do
-        files[#files + 1] = table.concat({tasPath, tas, file}, '/');
-    end;
+        files[#files + 1] = table.concat({ tasPath, tas, file }, '/')
+    end
 
-    local inputLogFile = io.open(table.concat({archivesBk2Path, tas, 'Input Log.txt'}, '/'), 'w');
+    local inputLogFile = io.open(table.concat({ archivesBk2Path, tas, 'Input Log.txt' }, '/'), 'w')
     inputLogFile:write(
         require('plugins/bizhawk/bizhawk').makeInputLogLines(
             require('core/input')().merge(files)
         )
-    );
-    inputLogFile:close();
+    )
+    inputLogFile:close()
 end
 
 BizhawkDump.process = process

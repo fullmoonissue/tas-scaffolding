@@ -36,3 +36,4 @@ install: ## [Install] In project and global dependencies (for development purpos
 test: ## [Tests] Launch them all
 	lua tests/core/test_dump.lua -v
 	lua tests/core/test_input.lua -v
+	lua tests/plugins/bizhawk/test_dump.lua -v

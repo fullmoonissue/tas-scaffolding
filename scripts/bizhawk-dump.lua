@@ -11,7 +11,7 @@ local function process(tas, cFilesPath, tasPath, archivesBk2Path)
 
     local inputLogFile = io.open(table.concat({archivesBk2Path, tas, 'Input Log.txt'}, '/'), 'w');
     inputLogFile:write(
-        require('plugins/bizhawk/dump')().makeInputLogFile(
+        require('plugins/bizhawk/dump')().makeInputLogLines(
             require('core/input')().merge(files)
         )
     );

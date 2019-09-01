@@ -1,5 +1,5 @@
 local lu = require('luaunit')
-local bizhawk = require('plugins/bizhawk/dump')
+local bizhawk = require('plugins/bizhawk/bizhawk')
 
 function testMakeInputLogLines()
     lu.assertEquals(
@@ -154,6 +154,18 @@ function testMakeInputLogLines()
                 ['P2 R2'] = true,
             },
         })
+    )
+end
+
+function testLfsForBizhawk()
+    lu.assertEquals(
+        'return {' .. "\n"
+            .. '    [\'test-game\'] = {' .. "\n"
+            .. '        \'0-init\',' .. "\n"
+            .. '        \'1-exit\',' .. "\n"
+            .. '    },' .. "\n"
+            .. '}',
+        bizhawk.lfsForBizhawk('tests/tas')
     )
 end
 

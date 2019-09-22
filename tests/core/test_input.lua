@@ -1,9 +1,9 @@
 local lu = require('luaunit')
-local input = require('core/input')()
+local input = require('core/input')
 
 function testQueuedInputs()
-    input.reset()
-    input.setPlayer(5)
+    input:reset()
+    input:setPlayer(5)
     input:up(1)
     input:left(2)
     input:right(3)
@@ -83,13 +83,13 @@ function testQueuedInputs()
                 ['P5 Right'] = true,
             },
         },
-        input.all()
+        input:all()
     )
 end
 
 function testCombinedInputs()
-    input.reset()
-    input.add(
+    input:reset()
+    input:add(
         1,
         2,
         {
@@ -144,12 +144,12 @@ function testCombinedInputs()
                 ['P7 R2'] = true,
             },
         },
-        input.all()
+        input:all()
     )
 end
 
 function testMerge()
-    input.reset()
+    input:reset()
     lu.assertEquals(
         {
             [1] = {
@@ -164,10 +164,10 @@ function testMerge()
             },
         },
         input.merge({
-            'tests/tas/test-game/0-init',
-            'tests/tas/test-game/1-exit',
+            'tests/tas/any%/0-init',
+            'tests/tas/any%/1-exit',
         })
     )
 end
 
-os.exit( lu.LuaUnit.run() )
+os.exit(lu.LuaUnit.run())

@@ -2,17 +2,18 @@
 
 ## AVI to MP4 with ffmpeg
 
-If you saved a video output from Bizhawk in multiple .avi files, here are some commands to make a .mp4 file for Youtube.
+If you saved a video output from Bizhawk in multiple .avi files, here are some commands to make a .mp4 file for Youtube
+([ffmpeg](https://ffmpeg.org/download.html) is needed).
 
-### Merge all the .avi (fragments) video together (ffmpeg needed)
+### Merge all the .avi (fragments) video together
 
     # Create a file which will contain the listing of all your .avi files to concat
     # For the example, the file is named game-join-videos.txt
     
     # Content of /path/to/game-join-videos.txt 
-    file '/path/game.avi'
-    file '/path/game_1.avi'
-    file '/path/game_2.avi'
+    file '/path/to/avi/game.avi'
+    file '/path/to/avi/game_1.avi'
+    file '/path/to/avi/game_2.avi'
     ...
 
     # Do the merge (for the example, the output file is named tas-game.avi)

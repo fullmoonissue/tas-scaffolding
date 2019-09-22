@@ -1,5 +1,5 @@
-# Values in config.lua will always change during the tas and are not valuable for versioning
-config.lua
+# The file configuration/play.lua will always change during the creation of the tas and is not valuable for versioning
+configuration/play.lua
 
 # Rocks installed from make install
 lua_modules

@@ -101,7 +101,7 @@ A tas file (full of inputs), looks like this :
 
     Example (tas/any%/0-init.lua) :
     
-    local input = require('core/input')()
+    local input = require('core/input')
     
     -- Push, during 1 frame, the Select button on frame 2450
     input:select(2450)
@@ -208,8 +208,6 @@ At this point, you are able to create a TAS, here are the steps :
         |
         -> core
             |
-            -> dump.lua (Tool to dump various contents)
-            |
             -> input.lua (Tool to add a new input to send to Bizhawk)
         |
         -> plugins
@@ -218,7 +216,7 @@ At this point, you are able to create a TAS, here are the steps :
                 |
                 -> bk2 (Location of your .bk2 archive)
                 |
-                -> dump.lua (Tool to dump various contents)
+                -> bizhawk.lua (Tool to dump various contents)
             |
             -> macro
                 |
@@ -234,7 +232,7 @@ At this point, you are able to create a TAS, here are the steps :
                 |
                 -> savestate (Location of your savestates as file)
         |
-        -> scripts (Location of your own scripts)
+        -> scripts (Location of some pre-configured scripts and your own scripts)
         |
         -> tas (Location of your tas by category like any%, 100%, ...)
 
@@ -244,36 +242,8 @@ Some additional goodies are present, here they are :
 
 #### Macro
 
-The file `plugins/macro/collection.lua` allows you to put a collection of inputs under a function.
-
-    Example 1 :
-    
-    example_without_custom_inputs = function(currentFrame)
-        input:right(currentFrame)
-        currentFrame = currentFrame + 2
-        input:right(currentFrame)
-        
-        return currentFrame
-    end
-    
-    Example 2 :
-    
-    example_with_custom_inputs = function(currentFrame, iterations)
-        return input:add(
-            currentFrame,
-            iterations,
-            {
-                [input.currentPlayer .. ' Circle'] = true,
-                [input.currentPlayer .. ' Cross'] = true,
-            }
-        )
-    end
-    
-    Call in your tas file :
-    
-    local macro = require('plugins/macro/collection')()
-    macro.example_without_custom_inputs(1525)
-    macro.example_with_custom_inputs(3000, 7)
+The file `plugins/macro/collection.lua` allows you to put a collection of inputs under a function to not rewrite them.
+Some examples are written into the precised file and the associated call into `assets/templates/new-tas-file.lua`.
 
 #### Overlay
 
@@ -326,8 +296,28 @@ You can put your .wch file into the folder assets/ram-watch.
     # Check code style
     make cs-check
     
-    # Tests
+    # Tests (code)
     make test
+    
+    # Tests (with a game)
+    [Please check the "Warning" section above to understand my way of testing the all process]
+    make TAS_FOLDER=/path/to/tas/project/test-tas-scaffolding build-scaffolding
+    cd ~/Desktop && ln -s /path/to/tas/project/test-tas-scaffolding/start.lua test-scaffolding.lua (for Parallels)
+    1. Setup
+    => Launching Parallels then BizHawk then a game
+    => Then I select the menu Tools -> Lua Console and then select the test-scaffolding.lua (previously created) file
+    2. Checks
+    2a. No tas file added
+    => Here, I check that no errors are displayed on the lua console before continuing
+    => Else I fix into test-tas-scaffolding (and I do a Emulation -> Reboot Core to recheck)
+    => And once the fix is done, I propagate it into the tas-scaffolding project
+    2b. New tas file added
+    => Here, I register a new file (make TAS=any% FILE=0-init.lua register <= from test-tas-scaffolding folder)
+    => Then add an input enough long to be viewed after (ex: input:start(cf + 650, 200) in tas/any%/0-init.lua)
+    => Then update the value in configuration/play.lua (local currentTas = 'any%')
+    => Then display inputs in BizHawk (View -> Display inputs)
+    => Finally, I reboot the core (cf 2a. above) and check that the framecount overlay and my inputs are displayed
+    => Else I do the fixes (cf 2a.)
 
 ## Todo
 
@@ -339,3 +329,4 @@ You can put your .wch file into the folder assets/ram-watch.
 * Make a video about the usage of this project
 * Make some schemas in addition to the text in the README (using plantUML ?)
 * Try to create a form to merge all the plugins into a visual way (using sqlite ?)
+* Generator of description for youtube, tasvideos.org, ...

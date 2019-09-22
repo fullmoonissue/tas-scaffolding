@@ -1,164 +1,150 @@
-local bag = {}
-local currentPlayer = 'P1'
+local Input = {
+    bag = {},
+    currentPlayer = 'P1'
+}
 
-local Input = setmetatable(
-    {
-        bag = bag,
-        currentPlayer = currentPlayer,
-    },
-    {
-        __call = function()
-            return {
-                all = function()
-                    return bag
-                end,
+function Input:all()
+    return self.bag
+end
 
-                reset = function()
-                    bag = {}
-                end,
+function Input:reset()
+    self.bag = {}
+end
 
-                setPlayer = function(player)
-                    currentPlayer = 'P' .. player
-                end,
+function Input:setPlayer(player)
+    self.currentPlayer = 'P' .. player
+end
 
-                add = function(frame, iterations, joypad)
-                    local currentFrame
-                    for i = 1, (iterations or 1) do
-                        currentFrame = tonumber(frame + (i - 1))
+function Input:add(frame, iterations, joypad)
+    local currentFrame
+    for i = 1, (iterations or 1) do
+        currentFrame = tonumber(frame + (i - 1))
 
-                        if (not bag[currentFrame]) then
-                            bag[currentFrame] = {}
-                        end
-
-                        for k, v in pairs(joypad) do
-                            bag[currentFrame][k] = v
-                        end
-                    end
-
-                    return currentFrame
-                end,
-
-                -- Merge inputs from files
-                merge = function(files)
-                    local inputs = {}
-                    for _, file in ipairs(files) do
-                        if file ~= '.' and file ~= '..' then
-                            local importedInputs = require(file)
-                            for frame, bInputs in pairs(importedInputs) do
-                                inputs[frame] = bInputs
-                            end
-                        end
-                    end
-
-                    return inputs
-                end,
-
-                -- Begin of atomic buttons
-
-                up = function(self, frame, iterations)
-                    return self.add(frame, iterations, { [currentPlayer .. ' Up'] = true })
-                end,
-
-                left = function(self, frame, iterations)
-                    return self.add(frame, iterations, { [currentPlayer .. ' Left'] = true })
-                end,
-
-                right = function(self, frame, iterations)
-                    return self.add(frame, iterations, { [currentPlayer .. ' Right'] = true })
-                end,
-
-                down = function(self, frame, iterations)
-                    return self.add(frame, iterations, { [currentPlayer .. ' Down'] = true })
-                end,
-
-                upLeft = function(self, frame, iterations)
-                    return self.add(
-                        frame,
-                        iterations,
-                        {
-                            [currentPlayer .. ' Up'] = true,
-                            [currentPlayer .. ' Left'] = true,
-                        }
-                    )
-                end,
-
-                upRight = function(self, frame, iterations)
-                    return self.add(
-                        frame,
-                        iterations,
-                        {
-                            [currentPlayer .. ' Up'] = true,
-                            [currentPlayer .. ' Right'] = true,
-                        }
-                    )
-                end,
-
-                downLeft = function(self, frame, iterations)
-                    return self.add(
-                        frame,
-                        iterations,
-                        {
-                            [currentPlayer .. ' Down'] = true,
-                            [currentPlayer .. ' Left'] = true,
-                        }
-                    )
-                end,
-
-                downRight = function(self, frame, iterations)
-                    return self.add(
-                        frame,
-                        iterations,
-                        {
-                            [currentPlayer .. ' Down'] = true,
-                            [currentPlayer .. ' Right'] = true,
-                        }
-                    )
-                end,
-
-                select = function(self, frame, iterations)
-                    return self.add(frame, iterations, { [currentPlayer .. ' Select'] = true })
-                end,
-
-                start = function(self, frame, iterations)
-                    return self.add(frame, iterations, { [currentPlayer .. ' Start'] = true })
-                end,
-
-                triangle = function(self, frame, iterations)
-                    return self.add(frame, iterations, { [currentPlayer .. ' Triangle'] = true })
-                end,
-
-                square = function(self, frame, iterations)
-                    return self.add(frame, iterations, { [currentPlayer .. ' Square'] = true })
-                end,
-
-                circle = function(self, frame, iterations)
-                    return self.add(frame, iterations, { [currentPlayer .. ' Circle'] = true })
-                end,
-
-                cross = function(self, frame, iterations)
-                    return self.add(frame, iterations, { [currentPlayer .. ' Cross'] = true })
-                end,
-
-                l1 = function(self, frame, iterations)
-                    return self.add(frame, iterations, { [currentPlayer .. ' L1'] = true })
-                end,
-
-                l2 = function(self, frame, iterations)
-                    return self.add(frame, iterations, { [currentPlayer .. ' L2'] = true })
-                end,
-
-                r1 = function(self, frame, iterations)
-                    return self.add(frame, iterations, { [currentPlayer .. ' R1'] = true })
-                end,
-
-                r2 = function(self, frame, iterations)
-                    return self.add(frame, iterations, { [currentPlayer .. ' R2'] = true })
-                end,
-
-                -- End of atomic buttons
-            }
+        if (not self.bag[currentFrame]) then
+            self.bag[currentFrame] = {}
         end
-    }
-)
+
+        for k, v in pairs(joypad) do
+            self.bag[currentFrame][k] = v
+        end
+    end
+
+    return currentFrame
+end
+
+-- Merge inputs from files
+function Input.merge(files)
+    local inputs = {}
+    for _, file in ipairs(files) do
+        if file ~= '.' and file ~= '..' then
+            local importedInputs = require(file)
+            for frame, bInputs in pairs(importedInputs) do
+                inputs[frame] = bInputs
+            end
+        end
+    end
+
+    return inputs
+end
+
+function Input:up(frame, iterations)
+    return Input:add(frame, iterations, { [self.currentPlayer .. ' Up'] = true })
+end
+
+function Input:left(frame, iterations)
+    return Input:add(frame, iterations, { [self.currentPlayer .. ' Left'] = true })
+end
+
+function Input:right(frame, iterations)
+    return Input:add(frame, iterations, { [self.currentPlayer .. ' Right'] = true })
+end
+
+function Input:down(frame, iterations)
+    return Input:add(frame, iterations, { [self.currentPlayer .. ' Down'] = true })
+end
+
+function Input:upLeft(frame, iterations)
+    return Input:add(
+        frame,
+        iterations,
+        {
+            [self.currentPlayer .. ' Up'] = true,
+            [self.currentPlayer .. ' Left'] = true,
+        }
+    )
+end
+
+function Input:upRight(frame, iterations)
+    return Input:add(
+        frame,
+        iterations,
+        {
+            [self.currentPlayer .. ' Up'] = true,
+            [self.currentPlayer .. ' Right'] = true,
+        }
+    )
+end
+
+function Input:downLeft(frame, iterations)
+    return Input:add(
+        frame,
+        iterations,
+        {
+            [self.currentPlayer .. ' Down'] = true,
+            [self.currentPlayer .. ' Left'] = true,
+        }
+    )
+end
+
+function Input:downRight(frame, iterations)
+    return Input:add(
+        frame,
+        iterations,
+        {
+            [self.currentPlayer .. ' Down'] = true,
+            [self.currentPlayer .. ' Right'] = true,
+        }
+    )
+end
+
+function Input:select(frame, iterations)
+    return Input:add(frame, iterations, { [self.currentPlayer .. ' Select'] = true })
+end
+
+function Input:start(frame, iterations)
+    return Input:add(frame, iterations, { [self.currentPlayer .. ' Start'] = true })
+end
+
+function Input:triangle(frame, iterations)
+    return Input:add(frame, iterations, { [self.currentPlayer .. ' Triangle'] = true })
+end
+
+function Input:square(frame, iterations)
+    return Input:add(frame, iterations, { [self.currentPlayer .. ' Square'] = true })
+end
+
+function Input:circle(frame, iterations)
+    return Input:add(frame, iterations, { [self.currentPlayer .. ' Circle'] = true })
+end
+
+function Input:cross(frame, iterations)
+    return Input:add(frame, iterations, { [self.currentPlayer .. ' Cross'] = true })
+end
+
+function Input:l1(frame, iterations)
+    return Input:add(frame, iterations, { [self.currentPlayer .. ' L1'] = true })
+end
+
+function Input:l2(frame, iterations)
+    return Input:add(frame, iterations, { [self.currentPlayer .. ' L2'] = true })
+end
+
+function Input:r1(frame, iterations)
+    return Input:add(frame, iterations, { [self.currentPlayer .. ' R1'] = true })
+end
+
+function Input:r2(frame, iterations)
+    return Input:add(frame, iterations, { [self.currentPlayer .. ' R2'] = true })
+end
 
 return Input

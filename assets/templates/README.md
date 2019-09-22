@@ -1,16 +1,20 @@
-# TAS ...category... of ...game... on ...console...
+# ...game... on ...console...
 
-*Presentation of the game*
+## TAS ...category...
 
-*Publication*
+**Presentation of the game**
+
+_Coming soon..._
+
+**Publication**
 
 _Work in Progress_
 
-*About the run*
+**About the run**
 
 * Emulator used : BizHawk X.Y.Z
 * TAS Scaffolding Project used : Version [A.B.C](https://github.com/fullmoonissue/tas-scaffolding/tree/A.B.C)
-* Source code (add a link if the project is publicly available)
+* [Source code](https://www.github.com/your-name/your-project-if-publicly-available)
 * Other ideas :
   * 2 / 4 players
   * Easy / Normal / Hard difficulty
@@ -22,26 +26,36 @@ _Work in Progress_
   * Entertains without sacrificing Frames
   * Game version
   * Game genre
-  * Other list here (http://tasvideos.org/Movies.html -> Movies by category)
+  * Other list here ([Movies by category](http://tasvideos.org/Movies.html))
 
-*Gameplay*
+**Gameplay**
 
-*Comments*
+_Coming soon..._
 
-*Weapons*
+**Tricks and Glitches**
 
-*Tricks and Glitches*
+_Coming soon..._
 
-*Routing*
+**Routing**
 
-*Stage by stage comments*
+_Coming soon..._
 
-*Known Improvements*
+**Stage by stage comments**
 
-*Possible Improvements*
+_Coming soon..._
 
-*Special Thanks*
+**Known / Possible Improvements**
 
-*Screenshot Suggestions*
+_Coming soon..._
 
-*Useful RAM Watch Addresses*
+**Special Thanks**
+
+_Coming soon..._
+
+**Screenshot Suggestions**
+
+_Coming soon..._
+
+**Useful RAM Watch Addresses**
+
+_Coming soon..._

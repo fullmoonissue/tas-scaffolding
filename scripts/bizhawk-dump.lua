@@ -12,7 +12,7 @@ local function process(tas, cFilesPath, tasPath, archivesBk2Path)
     local inputLogFile = io.open(table.concat({ archivesBk2Path, tas, 'Input Log.txt' }, '/'), 'w')
     inputLogFile:write(
         require('plugins/bizhawk/bizhawk').makeInputLogLines(
-            require('core/input')().merge(files)
+            require('core/input').merge(files)
         )
     )
     inputLogFile:close()

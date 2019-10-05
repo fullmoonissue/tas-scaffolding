@@ -331,10 +331,6 @@ The file `plugins/screenshot/configuration.lua` have to look like this :
 
 ## Todo
 
-* Dump a diff of the memory between a range of frames or between two frames (client.saveram ?)
-* Add some custom OSD (using client.SetGameExtraPadding ?)
-* Make a video about the usage of this project
-* Make some schemas in addition to the text in the README (using plantUML ?)
-* Try to create a form to merge all the plugins into a visual way (using sqlite ?)
 * Generator of description for youtube, tasvideos.org, ...
-* Tool to generate some benchmarks
+* Make some schemas in addition to the text in the README (plantUML ? mermaid ?)
+* Make a video about the usage of this project

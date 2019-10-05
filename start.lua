@@ -5,7 +5,7 @@ local loadSlot = play['loadSlot']
 local paths = require('configuration/paths')
 
 local files = {}
-local cFiles = require('configuration/files')
+local cFiles = paths['files']
 if (cFiles[currentTas] ~= nil) then
     for _, file in ipairs(cFiles[currentTas]) do
         files[#files + 1] = table.concat({ paths['tas'], currentTas, file }, '/')
@@ -30,6 +30,9 @@ end
 local mediator = require('mediator')()
 require('plugins/overlay/collection').applySubscriptions(mediator)
 
+-- Screenshot configuration
+local screenshotConfiguration = require(paths['screenshot'])
+
 while (true) do
     -- Retrieve the current frame ...
     local fc = emu.framecount()
@@ -37,10 +40,16 @@ while (true) do
     -- ... then dispatch it (for overlays) ...
     mediator:publish({ 'frame.displayed' }, fc)
 
-    -- ... and "push" the inputs (if inputs are set for this frame)
+    -- ... then "push" the inputs (if inputs are set for this frame) ...
     if (joypadSet[fc]) then
         joypad.set(joypadSet[fc])
     end
 
+    -- ... then do a screenshot if set for this frame ...
+    if (screenshotConfiguration['frames'][fc]) then
+        client.screenshot(screenshotConfiguration['path'])
+    end
+
+    -- ... and forward to the next frame
     emu.frameadvance()
 end

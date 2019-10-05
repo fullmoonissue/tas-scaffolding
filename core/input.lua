@@ -1,6 +1,8 @@
+local bhc = require('plugins/bizhawk/configuration')
+
 local Input = {
     bag = {},
-    currentPlayer = 'P1'
+    currentPlayer = 1
 }
 
 function Input:all()
@@ -12,7 +14,7 @@ function Input:reset()
 end
 
 function Input:setPlayer(player)
-    self.currentPlayer = 'P' .. player
+    self.currentPlayer = player
 end
 
 function Input:add(frame, iterations, joypad)
@@ -48,19 +50,19 @@ function Input.merge(files)
 end
 
 function Input:up(frame, iterations)
-    return Input:add(frame, iterations, { [self.currentPlayer .. ' Up'] = true })
+    return Input:add(frame, iterations, { [bhc.joypadUp(self.currentPlayer)] = true })
 end
 
 function Input:left(frame, iterations)
-    return Input:add(frame, iterations, { [self.currentPlayer .. ' Left'] = true })
+    return Input:add(frame, iterations, { [bhc.joypadLeft(self.currentPlayer)] = true })
 end
 
 function Input:right(frame, iterations)
-    return Input:add(frame, iterations, { [self.currentPlayer .. ' Right'] = true })
+    return Input:add(frame, iterations, { [bhc.joypadRight(self.currentPlayer)] = true })
 end
 
 function Input:down(frame, iterations)
-    return Input:add(frame, iterations, { [self.currentPlayer .. ' Down'] = true })
+    return Input:add(frame, iterations, { [bhc.joypadDown(self.currentPlayer)] = true })
 end
 
 function Input:upLeft(frame, iterations)
@@ -68,8 +70,8 @@ function Input:upLeft(frame, iterations)
         frame,
         iterations,
         {
-            [self.currentPlayer .. ' Up'] = true,
-            [self.currentPlayer .. ' Left'] = true,
+            [bhc.joypadUp(self.currentPlayer)] = true,
+            [bhc.joypadLeft(self.currentPlayer)] = true,
         }
     )
 end
@@ -79,8 +81,8 @@ function Input:upRight(frame, iterations)
         frame,
         iterations,
         {
-            [self.currentPlayer .. ' Up'] = true,
-            [self.currentPlayer .. ' Right'] = true,
+            [bhc.joypadUp(self.currentPlayer)] = true,
+            [bhc.joypadRight(self.currentPlayer)] = true,
         }
     )
 end
@@ -90,8 +92,8 @@ function Input:downLeft(frame, iterations)
         frame,
         iterations,
         {
-            [self.currentPlayer .. ' Down'] = true,
-            [self.currentPlayer .. ' Left'] = true,
+            [bhc.joypadDown(self.currentPlayer)] = true,
+            [bhc.joypadLeft(self.currentPlayer)] = true,
         }
     )
 end
@@ -101,50 +103,50 @@ function Input:downRight(frame, iterations)
         frame,
         iterations,
         {
-            [self.currentPlayer .. ' Down'] = true,
-            [self.currentPlayer .. ' Right'] = true,
+            [bhc.joypadDown(self.currentPlayer)] = true,
+            [bhc.joypadRight(self.currentPlayer)] = true,
         }
     )
 end
 
 function Input:select(frame, iterations)
-    return Input:add(frame, iterations, { [self.currentPlayer .. ' Select'] = true })
+    return Input:add(frame, iterations, { [bhc.joypadSelect(self.currentPlayer)] = true })
 end
 
 function Input:start(frame, iterations)
-    return Input:add(frame, iterations, { [self.currentPlayer .. ' Start'] = true })
+    return Input:add(frame, iterations, { [bhc.joypadStart(self.currentPlayer)] = true })
 end
 
 function Input:triangle(frame, iterations)
-    return Input:add(frame, iterations, { [self.currentPlayer .. ' Triangle'] = true })
+    return Input:add(frame, iterations, { [bhc.joypadTriangle(self.currentPlayer)] = true })
 end
 
 function Input:square(frame, iterations)
-    return Input:add(frame, iterations, { [self.currentPlayer .. ' Square'] = true })
+    return Input:add(frame, iterations, { [bhc.joypadSquare(self.currentPlayer)] = true })
 end
 
 function Input:circle(frame, iterations)
-    return Input:add(frame, iterations, { [self.currentPlayer .. ' Circle'] = true })
+    return Input:add(frame, iterations, { [bhc.joypadCircle(self.currentPlayer)] = true })
 end
 
 function Input:cross(frame, iterations)
-    return Input:add(frame, iterations, { [self.currentPlayer .. ' Cross'] = true })
+    return Input:add(frame, iterations, { [bhc.joypadCross(self.currentPlayer)] = true })
 end
 
 function Input:l1(frame, iterations)
-    return Input:add(frame, iterations, { [self.currentPlayer .. ' L1'] = true })
+    return Input:add(frame, iterations, { [bhc.joypadL1(self.currentPlayer)] = true })
 end
 
 function Input:l2(frame, iterations)
-    return Input:add(frame, iterations, { [self.currentPlayer .. ' L2'] = true })
+    return Input:add(frame, iterations, { [bhc.joypadL2(self.currentPlayer)] = true })
 end
 
 function Input:r1(frame, iterations)
-    return Input:add(frame, iterations, { [self.currentPlayer .. ' R1'] = true })
+    return Input:add(frame, iterations, { [bhc.joypadR1(self.currentPlayer)] = true })
 end
 
 function Input:r2(frame, iterations)
-    return Input:add(frame, iterations, { [self.currentPlayer .. ' R2'] = true })
+    return Input:add(frame, iterations, { [bhc.joypadR2(self.currentPlayer)] = true })
 end
 
 return Input

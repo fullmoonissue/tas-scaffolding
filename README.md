@@ -284,9 +284,19 @@ The file `plugins/preload/collection.lua` have to look like this :
         ['100%'] = 'the-savestate-file-for-100%',
     }
 
-#### RAM Watch
+#### Screenshots
 
-You can put your .wch file into the folder assets/ram-watch.
+If you want to do a screenshot of a specific frame (or many frames) :
+
+* Fill the lua table in `plugins/screenshot/configuration.lua`
+
+The file `plugins/screenshot/configuration.lua` have to look like this :
+
+    return {
+        -- Frame number as key ; Path to your future screenshot as value
+        [245] = 'C:\\Users\\your-username\\Documents\\screenshot_245.png',
+        [690] = 'C:\\Users\\your-username\\Documents\\main_screen.png',
+    }
 
 ## Development & Tests
 
@@ -300,7 +310,7 @@ You can put your .wch file into the folder assets/ram-watch.
     make test
     
     # Tests (with a game)
-    [Please check the "Warning" section above to understand my way of testing the all process]
+    [Please check the "Warning" section above to understand my way of testing all the process]
     make TAS_FOLDER=/path/to/tas/project/test-tas-scaffolding build-scaffolding
     cd ~/Desktop && ln -s /path/to/tas/project/test-tas-scaffolding/start.lua test-scaffolding.lua (for Parallels)
     1. Setup
@@ -322,7 +332,6 @@ You can put your .wch file into the folder assets/ram-watch.
 ## Todo
 
 * Dump a diff of the memory between a range of frames or between two frames (client.saveram ?)
-* Add a screenshot plugin (which frame ; with OSD or not ; folder location)
 * Add some custom OSD (using client.SetGameExtraPadding ?)
 * Make a video about the usage of this project
 * Make some schemas in addition to the text in the README (using plantUML ?)

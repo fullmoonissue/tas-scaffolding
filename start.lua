@@ -5,7 +5,7 @@ local loadSlot = play['loadSlot']
 local paths = require('configuration/paths')
 
 local files = {}
-local cFiles = paths['files']
+local cFiles = require(paths['files'])
 if (cFiles[currentTas] ~= nil) then
     for _, file in ipairs(cFiles[currentTas]) do
         files[#files + 1] = table.concat({ paths['tas'], currentTas, file }, '/')
@@ -46,8 +46,8 @@ while (true) do
     end
 
     -- ... then do a screenshot if set for this frame ...
-    if (screenshotConfiguration['frames'][fc]) then
-        client.screenshot(screenshotConfiguration['path'])
+    if (screenshotConfiguration[fc]) then
+        client.screenshot(screenshotConfiguration[fc])
     end
 
     -- ... and forward to the next frame

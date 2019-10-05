@@ -4,6 +4,7 @@
 return {
     ['bk2'] = 'plugins/bizhawk/bk2',
     ['files'] = 'configuration/files',
+    ['game'] = 'configuration/game',
     ['preloads'] = 'plugins/preload/collection',
     ['savestate'] = 'plugins/preload/savestate',
     ['screenshot'] = 'plugins/screenshot/configuration',

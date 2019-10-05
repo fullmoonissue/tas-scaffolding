@@ -321,8 +321,6 @@ You can put your .wch file into the folder assets/ram-watch.
 
 ## Todo
 
-* Create tas files from an existant BizHawk's Input Log.txt file
-* Add a little time splitter (in addition to the preloads) to help to exercice in speedrunning
 * Dump a diff of the memory between a range of frames or between two frames (client.saveram ?)
 * Add a screenshot plugin (which frame ; with OSD or not ; folder location)
 * Add some custom OSD (using client.SetGameExtraPadding ?)
@@ -330,3 +328,4 @@ You can put your .wch file into the folder assets/ram-watch.
 * Make some schemas in addition to the text in the README (using plantUML ?)
 * Try to create a form to merge all the plugins into a visual way (using sqlite ?)
 * Generator of description for youtube, tasvideos.org, ...
+* Tool to generate some benchmarks

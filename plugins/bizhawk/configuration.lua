@@ -18,7 +18,7 @@ local function getPlayer(player)
     return 'P' .. player
 end
 
-local function getJoybadInput(player, key)
+local function getJoypadInput(player, key)
     return string.format('%s %s', getPlayer(player), key)
 end
 
@@ -64,45 +64,45 @@ return {
         return self[string.format('joypad%s', key)](player)
     end,
     ['joypadUp'] = function (player)
-        return getJoybadInput(player, UP)
+        return getJoypadInput(player, UP)
     end,
     ['joypadDown'] = function (player)
-        return getJoybadInput(player, DOWN)
+        return getJoypadInput(player, DOWN)
     end,
     ['joypadLeft'] = function (player)
-        return getJoybadInput(player, LEFT)
+        return getJoypadInput(player, LEFT)
     end,
     ['joypadRight'] = function (player)
-        return getJoybadInput(player, RIGHT)
+        return getJoypadInput(player, RIGHT)
     end,
     ['joypadSelect'] = function (player)
-        return getJoybadInput(player, SELECT)
+        return getJoypadInput(player, SELECT)
     end,
     ['joypadStart'] = function (player)
-        return getJoybadInput(player, START)
+        return getJoypadInput(player, START)
     end,
     ['joypadSquare'] = function (player)
-        return getJoybadInput(player, SQUARE)
+        return getJoypadInput(player, SQUARE)
     end,
     ['joypadTriangle'] = function (player)
-        return getJoybadInput(player, TRIANGLE)
+        return getJoypadInput(player, TRIANGLE)
     end,
     ['joypadCircle'] = function (player)
-        return getJoybadInput(player, CIRCLE)
+        return getJoypadInput(player, CIRCLE)
     end,
     ['joypadCross'] = function (player)
-        return getJoybadInput(player, CROSS)
+        return getJoypadInput(player, CROSS)
     end,
     ['joypadL1'] = function (player)
-        return getJoybadInput(player, L1)
+        return getJoypadInput(player, L1)
     end,
     ['joypadR1'] = function (player)
-        return getJoybadInput(player, R1)
+        return getJoypadInput(player, R1)
     end,
     ['joypadL2'] = function (player)
-        return getJoybadInput(player, L2)
+        return getJoypadInput(player, L2)
     end,
     ['joypadR2'] = function (player)
-        return getJoybadInput(player, R2)
+        return getJoypadInput(player, R2)
     end
 }

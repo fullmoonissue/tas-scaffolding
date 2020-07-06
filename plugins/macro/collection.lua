@@ -1,4 +1,5 @@
 local Macro = {}
+-- local bhc = require('plugins/bizhawk/configuration')
 -- local input = require('core/input')
 
 --[[
@@ -22,8 +23,8 @@ local Macro = {}
             currentFrame,
             iterations,
             {
-                [input.currentPlayer .. ' Circle'] = true,
-                [input.currentPlayer .. ' Cross'] = true,
+                [bhc.joypadCircle(input.currentPlayer)] = true,
+                [bhc.joypadCross(input.currentPlayer)] = true,
             }
         )
     end

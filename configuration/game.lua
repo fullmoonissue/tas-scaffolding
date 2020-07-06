@@ -1,6 +1,6 @@
 return {
-    ['bizhawk_version'] = 'game.lua', -- Ex: 2.3.1
-    ['game_console'] = 'game.lua', -- Ex: 'Devil Dive'
-    ['game_name'] = 'game.lua', -- Ex: 'PSX'
-    ['scaffolding_version'] = 'game.lua', -- Ex: 3.1.0
+    ['bizhawk_version'] = '...', -- Ex: 2.4.0
+    ['game_console'] = '...', -- Ex: 'PSX'
+    ['game_name'] = '...', -- Ex: 'Devil Dive'
+    ['scaffolding_version'] = '...', -- Ex: 3.2.3
 }

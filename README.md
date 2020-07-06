@@ -158,7 +158,7 @@ At this point, you are able to create a TAS, here are the steps :
     - Go to your TAS project
     $ cd /path/to/your/projects/tas-of-your-game
     
-    - Let's say you'll make the any%, update the value of currentTas (with vi or your in your IDE)
+    - Let's say you'll make the any%, update the value of currentTas (with vi or in your IDE)
     $ vi configuration/play.lua (local currentTas = 'any%')
     - In this same file, you can assign the savestate slot which will be loaded
     when Bizhawk will be rebooted, let's say you will load the slot 0 after reboot
@@ -220,11 +220,11 @@ At this point, you are able to create a TAS, here are the steps :
             |
             -> macro
                 |
-                -> collection.lua (Location where you will add your own macro)
+                -> collection.lua (Location where you will add your own macros)
             |
             -> overlay
                 |
-                -> collection.lua (Location where you will add your own overlay)
+                -> collection.lua (Location where you will add your own overlays)
             |
             -> preload
                 |
@@ -264,7 +264,7 @@ The overlay which display the current frame is already created and displayed by 
 
 [Associated documentation](http://tasvideos.org/Bizhawk/BK2Format.html)
 
-One of the 5 files of the archive is `Input Log.txt` which is a representation of your inputs.
+One of the 5 files of the archive is `Input Log.txt` which is a representation of your inputs (understood by BizHawk).
 
 So, to "translate" the lua inputs into BizHawk inputs, the `make` task to do it is `make TAS=any% bizhawk-dump`.
 

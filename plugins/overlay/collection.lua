@@ -4,55 +4,78 @@
 local paths = require('configuration/paths')
 local game = require(paths['game'])
 
-local Overlay = {}
+local gridValues = {
+    ['screenWidth'] = 1147, -- instead of client.screenWidth()
+    ['screenHeight'] = 528, -- instead of client.screenHeight()
+    ['xRightArea'] = 720, -- x position for HUD
+}
+
+local function centerHorizontally(xOrigin, xEnd, text, fontSize)
+    return (xEnd - xOrigin) / 2 - ((string.len(text) * (fontSize * 2 / 3)) / 2)
+end
 
 local function framecount(fc)
-    local text = string.format('Frame : %d', fc)
-    gui.drawText(client.screenwidth() / 4 - string.len(text) * 5, 0, text, 'white', 'black', 15)
+    local fontSize, text = 15, string.format('Frame : %d', fc)
+    gui.drawText(
+        centerHorizontally(1, gridValues['screenWidth'], text, fontSize),
+        2,
+        text,
+        'white',
+        'black',
+        fontSize
+    )
+end
+
+-- Not initially shown, these method draw some rectangles to show areas useful when making HUD
+local function showGrid()
+    -- Whole area
+    gui.drawRectangle(1, 1, gridValues['screenWidth'], gridValues['screenHeight'], 'white')
+    -- Right area (HUD)
+    gui.drawRectangle(
+        gridValues['xRightArea'],
+        1,
+        gridValues['screenWidth'] - gridValues['xRightArea'],
+        gridValues['screenHeight'],
+        'white'
+    )
+    -- Right area split in half
+    gui.drawRectangle(
+        gridValues['xRightArea'],
+        1,
+        (gridValues['screenWidth'] - gridValues['xRightArea']) / 2,
+        gridValues['screenHeight'],
+        'white'
+    )
 end
 
 local function gameInfos()
-    client.SetGameExtraPadding(0, 25, 0, 25)
-    local screenWidth, yOrigin, text = client.screenwidth() / 2, client.screenheight() / 2 - 42
-
-    text = string.format('Game : %s', game['game_name'])
-    gui.drawText(
-        screenWidth / 2 - screenWidth / 4 - screenWidth / 8 - string.len(text) * 5,
-        yOrigin,
-        text,
-        'white',
-        'black',
-        15
-    )
-
-    text = string.format('Console : %s', game['game_console'])
-    gui.drawText(
-        screenWidth / 2 - screenWidth / 8 - string.len(text) * 5,
-        yOrigin, text,
-        'white',
-        'black',
-        15
-    )
-
-    text = string.format('Bizhawk : %s', game['bizhawk_version'])
-    gui.drawText(
-        screenWidth / 2 + screenWidth / 8 - string.len(text) * 5,
-        yOrigin,
-        text,
-        'white',
-        'black',
-        15
-    )
-
-    text = string.format('Framework : %s', game['scaffolding_version'])
-    gui.drawText(
-        screenWidth / 2 + screenWidth / 4 + screenWidth / 8 - string.len(text) * 5,
-        yOrigin,
-        text,
-        'white',
-        'black',
-        15
-    )
+    local texts = {
+        'Game',
+        game['game_name'],
+        'Console',
+        game['game_console'],
+        'Bizhawk version',
+        game['bizhawk_version'],
+        'TAS scaffolding project version',
+        game['scaffolding_version'],
+    }
+    local indexText, yOrigin, ySpace, fontSize = 0, 50, 50, 18
+    for y = yOrigin, yOrigin + (ySpace * (#texts - 1)), ySpace do
+        indexText = indexText + 1
+        gui.drawText(
+            gridValues['xRightArea'] + centerHorizontally(
+                gridValues['xRightArea'],
+                gridValues['screenWidth'],
+                texts[indexText],
+                fontSize
+            ),
+            y,
+            texts[indexText],
+            'white',
+            'black',
+            fontSize
+        )
+    end
 end
 
 local function applySubscriptions(mediator)
@@ -61,6 +84,8 @@ local function applySubscriptions(mediator)
         gameInfos()
     end)
 end
+
+local Overlay = {}
 
 Overlay.applySubscriptions = applySubscriptions
 

@@ -1,5 +1,8 @@
 .DEFAULT_GOAL := install
 
+SCAFFOLDING_VERSION=3.3.0
+SCAFFOLDING_URL=https://github.com/fullmoonissue/tas-scaffolding/tree/$(SCAFFOLDING_VERSION)
+
 install: ## [Install] Project dependencies
 	luarocks install mediator_lua --tree lua_modules
 	luarocks install luafilesystem --tree lua_modules
@@ -31,10 +34,10 @@ TAS_LFS=`lua -e "c=require('$(PATHS_FILE)'); print(c['files']);"`.lua
 #
 # -- Task: bizhawk-dump --
 #
-# >> Export your inputs into the BizHawk's `Input Log.txt` file <<
+# >> Export your lua inputs into the BizHawk's `Input Log.txt` file <<
 #
 # Required variable
-# TAS : Name of the tas (ex: any%)
+# TAS : Name of the tas category (ex: any%)
 #
 # Optional variable (see "Variables" section above for explanations)
 # TAS_LFS

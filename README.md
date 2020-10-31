@@ -27,6 +27,7 @@ This project aims to help creating a TAS running on [BizHawk](https://github.com
     This project was created with the following configuration :
     * Code running on MacOS
     * BizHawk running on Windows 10 (with Parallels)
+    * The ~/Desktop folder is the bridge between Mac and Windows
 
 ### Introduction
 
@@ -258,7 +259,9 @@ The library [mediator_lua](https://github.com/Olivine-Labs/mediator_lua) is used
 by `make install`) but to avoid cross OS library preloading problem, the core file of the
 mediator, `mediator.lua`, is copied at the root of your TAS (during the scaffolding).
 
-The overlay which display the current frame is already created and displayed by default.
+The overlays which display the current frame and the tas infos are already created and displayed by default.
+
+Be aware that client.screenwidth() and client.screenheight() are not initially used to set the coordonates but a `gridValues` variable is used instead.
 
 #### Archive bk2
 
@@ -310,27 +313,25 @@ The file `plugins/screenshot/configuration.lua` have to look like this :
     make test
     
     # Tests (with a game)
-    [Please check the "Warning" section above to understand my way of testing all the process]
-    make TAS_FOLDER=/path/to/tas/project/test-tas-scaffolding build-scaffolding
-    cd ~/Desktop && ln -s /path/to/tas/project/test-tas-scaffolding/start.lua test-scaffolding.lua (for Parallels)
-    1. Setup
-    => Launching Parallels then BizHawk then a game
-    => Then I select the menu Tools -> Lua Console and then select the test-scaffolding.lua (previously created) file
-    2. Checks
-    2a. No tas file added
-    => Here, I check that no errors are displayed on the lua console before continuing
-    => Else I fix into test-tas-scaffolding (and I do a Emulation -> Reboot Core to recheck)
-    => And once the fix is done, I propagate it into the tas-scaffolding project
-    2b. New tas file added
-    => Here, I register a new file (make TAS=any% FILE=0-init.lua register <= from test-tas-scaffolding folder)
-    => Then add an input enough long to be viewed after (ex: input:start(cf + 650, 200) in tas/any%/0-init.lua)
-    => Then update the value in configuration/play.lua (local currentTas = 'any%')
-    => Then display inputs in BizHawk (View -> Display inputs)
-    => Finally, I reboot the core (cf 2a. above) and check that the framecount overlay and my inputs are displayed
-    => Else I do the fixes (cf 2a.)
-
-## Todo
-
-* Generator of description for youtube, tasvideos.org, ...
-* Make some schemas in addition to the text in the README (plantUML ? mermaid ?)
-* Make a video about the usage of this project
+    
+    [Please check the "Warning" section above to understand the way of testing all the process]
+    
+    1. Setup test game environment
+        make TAS_FOLDER=/path/to/tas/project/test-tas-scaffolding build-scaffolding
+        cd ~/Desktop
+        ln -s /path/to/tas/project/test-tas-scaffolding/start.lua test-scaffolding.lua (for Parallels)
+    2. Setup Bizhawk
+        a. Launch Parallels then BizHawk then a game
+        b. Menu Tools -> Lua Console and then select test-scaffolding.lua file (previously created)
+    3. Checks
+        3a. No tas file added
+            If an error displayed on the lua console
+            Then fix into test-tas-scaffolding, close the Lua Console and repeat 2b. (to recheck)
+            And once the fix is done, propagate it into the tas-scaffolding project
+        3b. New tas file added
+            Register a new file (make TAS=any% FILE=0-init.lua register, from test-tas-scaffolding folder)
+            Then add an input enough long to be viewed after (ex: input:start(cf + 650, 200) in tas/any%/0-init.lua)
+            Then update the value in configuration/play.lua (local currentTas = 'any%')
+            Then display inputs in BizHawk (View -> Display inputs)
+            Finally, reboot the core (Emulation -> Reboot Core) and check that the framecount overlay and the inputs are displayed
+            Repeat 3a.

@@ -12,16 +12,16 @@ if (cFiles[currentTas] ~= nil) then
     end
 end
 
--- Retrieve the inputs of the current tas
+-- Retrieve the inputs of the current tas' category
 local joypadSet = require('core/input').merge(files)
 
--- Preload a savestate, if exists
+-- Preload a savestate, if defined
 local preloads = require(paths['preloads'])
 if (preloads[currentTas] ~= nil) then
     savestate.load(table.concat({ paths['savestate'], preloads[currentTas] }, '/'))
 end
 
--- Load the current savestate, if defined and exists
+-- Load the current savestate, if defined
 if (loadSlot ~= nil) then
     savestate.loadslot(loadSlot)
 end
@@ -29,8 +29,10 @@ end
 -- Add overlays
 local mediator = require('mediator')()
 require('plugins/overlay/collection').applySubscriptions(mediator)
+-- Default extra padding to show tas infos
+client.SetGameExtraPadding(0, 25, 350, 25)
 
--- Screenshot configuration
+-- @see Plugins > Screenshots in the README.md for further explanations
 local screenshotConfiguration = require(paths['screenshot'])
 
 while (true) do
@@ -40,7 +42,7 @@ while (true) do
     -- ... then dispatch it (for overlays) ...
     mediator:publish({ 'frame.displayed' }, fc)
 
-    -- ... then "push" the inputs (if inputs are set for this frame) ...
+    -- ... then send the configured inputs to Bizhawk ...
     if (joypadSet[fc]) then
         joypad.set(joypadSet[fc])
     end

@@ -20,7 +20,7 @@ build-scaffolding: ## [Build] Launch the scaffolding
 	    && mv assets/templates/.gitignore .gitignore \
 	    && make install \
 	    && cp lua_modules/share/lua/5.3/mediator.lua mediator.lua
-	@echo "\n\n==>> Before starting, you can change game values in the file $(TAS_FOLDER)/configuration/game.lua\n\n"
+	@echo "\n\n==>> Before starting, you can change tas values in the file $(TAS_FOLDER)/configuration/tas.lua\n\n"
 
 cs-check: ## [CS] Launch the check of the code style
 	luacheck --std=min+bizhawk assets/templates/new-tas-file.lua configuration core plugins scripts tas start.lua

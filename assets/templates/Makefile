@@ -15,17 +15,17 @@ install: ## [Install] Project dependencies
 PATHS_FILE=configuration/paths
 
 # Path to the bk2 folder (see "Archive bk2" section into the README.md of tas-scaffolding project)
-BK2_FOLDER=`lua -e "c=require('$(PATHS_FILE)'); print(c['bk2']);"`
+BK2_FOLDER=`lua -e "c=require('$(PATHS_FILE)'); print(c['folder']['bk2']);"`
 
 # Path to the tas file template (see "Introduction" section into the README.md of tas-scaffolding project)
-TAS_FILE_TEMPLATE=`lua -e "c=require('$(PATHS_FILE)'); print(c['tpl_new_file']);"`
+TAS_FILE_TEMPLATE=`lua -e "c=require('$(PATHS_FILE)'); print(c['template']['newFile']);"`
 
 # Path to the tas folder (see "Introduction" section into the README.md of tas-scaffolding project)
-TAS_FOLDER=`lua -e "c=require('$(PATHS_FILE)'); print(c['tas']);"`
+TAS_FOLDER=`lua -e "c=require('$(PATHS_FILE)'); print(c['folder']['tas']);"`
 
 # Path to the file which list the files for each tas
 # (see "Technical difficulties" section into the README.md of tas-scaffolding project)
-TAS_LFS=`lua -e "c=require('$(PATHS_FILE)'); print(c['files']);"`.lua
+TAS_LFS=`lua -e "c=require('$(PATHS_FILE)'); print(c['tas']['files']);"`.lua
 
 # ### ### #
 # Scripts #

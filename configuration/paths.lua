@@ -2,12 +2,20 @@
 -- more valid. Do it with caution.
 
 return {
-    ['bk2'] = 'plugins/bizhawk/bk2',
-    ['files'] = 'configuration/files',
-    ['game'] = 'configuration/game',
-    ['preloads'] = 'plugins/preload/collection',
-    ['savestate'] = 'plugins/preload/savestate',
-    ['screenshot'] = 'plugins/screenshot/configuration',
-    ['tas'] = 'tas',
-    ['tpl_new_file'] = 'assets/templates/new-tas-file.lua',
+    ['collection'] = {
+        ['preload'] = 'plugins/preload/collection',
+        ['screenshot'] = 'plugins/screenshot/collection',
+    },
+    ['folder'] = {
+        ['bk2'] = 'plugins/bizhawk/bk2',
+        ['savestate'] = 'plugins/preload/savestate',
+        ['tas'] = 'tas',
+    },
+    ['tas'] = {
+        ['files'] = 'configuration/files',
+        ['infos'] = 'configuration/tas',
+    },
+    ['template'] = {
+        ['newFile'] = 'assets/templates/new-tas-file.lua',
+    },
 }

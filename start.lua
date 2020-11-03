@@ -5,10 +5,10 @@ local loadSlot = play['loadSlot']
 local paths = require('configuration/paths')
 
 local files = {}
-local cFiles = require(paths['files'])
+local cFiles = require(paths['tas']['files'])
 if (cFiles[currentTas] ~= nil) then
     for _, file in ipairs(cFiles[currentTas]) do
-        files[#files + 1] = table.concat({ paths['tas'], currentTas, file }, '/')
+        files[#files + 1] = table.concat({ paths['folder']['tas'], currentTas, file }, '/')
     end
 end
 
@@ -16,9 +16,9 @@ end
 local joypadSet = require('core/input').merge(files)
 
 -- Preload a savestate, if defined
-local preloads = require(paths['preloads'])
+local preloads = require(paths['collection']['preload'])
 if (preloads[currentTas] ~= nil) then
-    savestate.load(table.concat({ paths['savestate'], preloads[currentTas] }, '/'))
+    savestate.load(table.concat({ paths['folder']['savestate'], preloads[currentTas] }, '/'))
 end
 
 -- Load the current savestate, if defined
@@ -33,7 +33,7 @@ require('plugins/overlay/collection').applySubscriptions(mediator)
 client.SetGameExtraPadding(0, 25, 350, 25)
 
 -- @see Plugins > Screenshots in the README.md for further explanations
-local screenshotConfiguration = require(paths['screenshot'])
+local screenshotConfiguration = require(paths['collection']['screenshot'])
 
 while (true) do
     -- Retrieve the current frame ...

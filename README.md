@@ -206,10 +206,18 @@ At this point, you are able to create a TAS, here are the steps :
             -> paths.lua (Lua table which contains all the paths to specific folders)
             |
             -> play.lua.dist (Configuration file of the played tas)
+            |
+            -> tas.lua (TAS infos)
         |
         -> core
             |
             -> input.lua (Tool to add a new input to send to Bizhawk)
+        |
+        -> docs
+            |
+            -> bk2.md (Create / Update the bk2 archive)
+            |
+            -> publication.md (Show one way to create a youtube ready video after recording)
         |
         -> plugins
             |
@@ -218,6 +226,8 @@ At this point, you are able to create a TAS, here are the steps :
                 -> bk2 (Location of your .bk2 archive)
                 |
                 -> bizhawk.lua (Tool to dump various contents)
+                |
+                -> configuration.lua (Bizhawk joypad's shortcuts)
             |
             -> macro
                 |
@@ -229,13 +239,21 @@ At this point, you are able to create a TAS, here are the steps :
             |
             -> preload
                 |
-                -> collection.lua (Lua table which contains the savestate to load before a certain tas)
-                |
                 -> savestate (Location of your savestates as file)
+                |
+                -> collection.lua (Lua table which contains the savestate to load before a certain tas)
+            |
+            -> screenshot
+                |
+                -> output (Location of your screenshots)
+                |
+                -> collection.lua (Lua table which contains the configuration for the screenshots)
         |
         -> scripts (Location of some pre-configured scripts and your own scripts)
         |
         -> tas (Location of your tas by category like any%, 100%, ...)
+        |
+        -> tests (unit tests, @see "Development & Tests" section)
 
 ## Plugins
 
@@ -291,9 +309,9 @@ The file `plugins/preload/collection.lua` have to look like this :
 
 If you want to do a screenshot of a specific frame (or many frames) :
 
-* Fill the lua table in `plugins/screenshot/configuration.lua`
+* Fill the lua table in `plugins/screenshot/collection.lua`
 
-The file `plugins/screenshot/configuration.lua` have to look like this :
+The file `plugins/screenshot/collection.lua` have to look like this :
 
     return {
         -- Frame number as key ; Path to your future screenshot as value

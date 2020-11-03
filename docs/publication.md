@@ -2,8 +2,7 @@
 
 ## AVI to MP4 with ffmpeg
 
-If you saved a video output from Bizhawk in multiple .avi files, here are some commands to make a .mp4 file for Youtube
-([ffmpeg](https://ffmpeg.org/download.html) is needed).
+If you saved a video output from Bizhawk in multiple .avi files, here are some commands to make a .mp4 file for Youtube ([ffmpeg](https://ffmpeg.org/download.html) is needed).
 
 ### Merge all the .avi (fragments) video together
 

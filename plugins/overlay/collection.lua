@@ -2,7 +2,7 @@
 -- http://tasvideos.org/Bizhawk/LuaFunctions.html#tabber
 
 local paths = require('configuration/paths')
-local game = require(paths['game'])
+local game = require(paths['tas']['infos'])
 
 local gridValues = {
     ['screenWidth'] = 1147, -- instead of client.screenWidth()
@@ -48,7 +48,7 @@ local function showGrid()
     )
 end
 
-local function gameInfos()
+local function tasInfos()
     local texts = {
         'Game',
         game['game_name'],
@@ -81,7 +81,7 @@ end
 local function applySubscriptions(mediator)
     mediator:subscribe({ 'frame.displayed' }, function(fc)
         framecount(fc)
-        gameInfos()
+        tasInfos()
     end)
 end
 

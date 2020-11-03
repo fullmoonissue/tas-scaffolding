@@ -168,15 +168,12 @@ function testMakeJoypadInputs()
 end
 
 function testLfsForBizhawk()
-    lu.assertEquals(
-        'return {' .. "\n"
-            .. '    [\'any%\'] = {' .. "\n"
-            .. '        \'0-init\',' .. "\n"
-            .. '        \'1-exit\',' .. "\n"
-            .. '    },' .. "\n"
-            .. '}',
-        bizhawk.lfsForBizhawk('tests/tas')
-    )
+    local lfsTestFile = './tests/plugins/bizhawk/lfsTest'
+    local f = io.open(lfsTestFile .. '.lua', 'w')
+    f:write(bizhawk.lfsForBizhawk('tests/tas'))
+    f:close()
+
+    lu.assertEquals(2, #require(lfsTestFile)['any%'])
 end
 
 os.exit(lu.LuaUnit.run())

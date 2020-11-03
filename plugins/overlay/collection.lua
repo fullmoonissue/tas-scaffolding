@@ -26,7 +26,8 @@ local function framecount(fc)
     )
 end
 
--- Not initially shown, these method draw some rectangles to show areas useful when making HUD
+-- These method draw some rectangles to show areas, useful when making HUD
+--[[
 local function showGrid()
     -- Whole area
     gui.drawRectangle(1, 1, gridValues['screenWidth'], gridValues['screenHeight'], 'white')
@@ -47,6 +48,7 @@ local function showGrid()
         'white'
     )
 end
+]]--
 
 local function tasInfos()
     local texts = {
@@ -81,6 +83,7 @@ end
 local function applySubscriptions(mediator)
     mediator:subscribe({ 'frame.displayed' }, function(fc)
         framecount(fc)
+        --showGrid()
         tasInfos()
     end)
 end

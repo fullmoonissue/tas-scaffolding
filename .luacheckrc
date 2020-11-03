@@ -1,3 +1,3 @@
 stds.bizhawk = {
-   globals = {"gui", "memory", "savestate", "emu", "joypad"},
+   globals = {"gui", "memory", "savestate", "emu", "joypad", "client"},
 }

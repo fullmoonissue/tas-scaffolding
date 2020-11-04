@@ -29,8 +29,6 @@ end
 -- Add overlays
 local mediator = require('mediator')()
 require('plugins/overlay/collection').applySubscriptions(mediator)
--- Default extra padding to show tas infos
-client.SetGameExtraPadding(0, 25, 350, 25)
 
 -- @see Plugins > Screenshots in the README.md for further explanations
 local screenshotConfiguration = require(paths['collection']['screenshot'])

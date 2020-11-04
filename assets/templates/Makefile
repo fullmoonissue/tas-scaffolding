@@ -17,6 +17,9 @@ PATHS_FILE=configuration/paths
 # Path to the bk2 folder (see "Archive bk2" section into the README.md of tas-scaffolding project)
 BK2_FOLDER=`lua -e "c=require('$(PATHS_FILE)'); print(c['folder']['bk2']);"`
 
+# Path to the publication folder
+PUBLICATION_FOLDER=`lua -e "c=require('$(PATHS_FILE)'); print(c['folder']['publication']);"`
+
 # Path to the tas file template (see "Introduction" section into the README.md of tas-scaffolding project)
 TAS_FILE_TEMPLATE=`lua -e "c=require('$(PATHS_FILE)'); print(c['template']['newFile']);"`
 
@@ -28,7 +31,7 @@ TAS_FOLDER=`lua -e "c=require('$(PATHS_FILE)'); print(c['folder']['tas']);"`
 TAS_LFS=`lua -e "c=require('$(PATHS_FILE)'); print(c['tas']['files']);"`.lua
 
 # ### ### #
-# Scripts #
+# BizHawk #
 # ### ### #
 
 #
@@ -88,3 +91,53 @@ register:
 	@[ -d $(TAS_FOLDER)/$(TAS) ] || mkdir $(TAS_FOLDER)/$(TAS)
 	@lua scripts/register.lua $(TAS) $(FILE) $(TAS_FOLDER) $(TAS_FILE_TEMPLATE)
 	@make bizhawk-lfs
+
+# ### ### #
+#  Video  #
+# ### ### #
+
+# The next tasks will help to generate a youtube ready video after recording
+# >> Recording parameters often used : A/V Writer => AVI Writer ; Compressor => Codec Intel IYUV <<
+
+# GAME is the name of the first recording file without extension
+# >> To prevent from errors (in make commands), you should avoid space into the name and prefer a slugified name
+
+#
+# -- Task: video-convert-avi-to-mp4 --
+#
+# >> Convert from avi video (from Bizhawk) to mp4 video (for youtube) using ffmpeg <<
+#
+# Required variable
+# FFMPEG : Path to the ffmpeg binary (ex: ./ffmpeg)
+# GAME : @see above
+# CATEGORY : Category of the tas (ex: "any%")
+#
+
+video-convert-avi-to-mp4:
+	@$(FFMPEG) -i $(PWD)/$(PUBLICATION_FOLDER)/tas-$(GAME)-$(CATEGORY).avi -c:v libx264 -crf 19 -preset slow -c:a aac -b:a 192k -ac 2 $(PWD)/$(PUBLICATION_FOLDER)/tas-$(GAME)-$(CATEGORY).mp4
+
+#
+# -- Task: video-glue-parts --
+#
+# >> Create one video by joining fragments using ffmpeg <<
+#
+# Required variable
+# FFMPEG : Path to the ffmpeg binary (ex: ./ffmpeg)
+# GAME : @see above
+# CATEGORY : Category of the tas (ex: "any%")
+#
+
+video-glue-parts:
+	@$(FFMPEG) -f concat -safe 0 -i $(PWD)/$(PUBLICATION_FOLDER)/$(GAME)-video-parts.txt -c copy $(PWD)/$(PUBLICATION_FOLDER)/tas-$(GAME)-$(CATEGORY).avi
+
+#
+# -- Task: video-prepare-parts --
+#
+# >> Create the file needed by ffmpeg to glue video parts together <<
+#
+# Required variable
+# GAME : @see above
+#
+
+video-prepare-parts:
+	@ls $(PWD)/$(PUBLICATION_FOLDER)/$(GAME)* | sed "s/^/file '/" | sed "s/$$/'/" > $(PWD)/$(PUBLICATION_FOLDER)/$(GAME)-video-parts.txt

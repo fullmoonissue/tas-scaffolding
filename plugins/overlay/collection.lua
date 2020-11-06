@@ -16,7 +16,7 @@ local tasInfos = require('plugins/overlay/tasInfos')
 ]]--
 
 local function applySubscriptions(mediator)
-    mediator:subscribe({ 'frame.displayed' }, function(fc)
+    mediator:subscribe({ 'frame.displayed' }, function(--[[fc]])
         -- frameCount(fc)   ## Display the current frame
         -- tasInfos()       ## Display infos about the game and BizHawk
     end)

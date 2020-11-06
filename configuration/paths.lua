@@ -8,6 +8,7 @@ return {
     },
     ['folder'] = {
         ['bk2'] = 'plugins/bizhawk/bk2',
+        ['publication'] = 'assets/publication',
         ['savestate'] = 'plugins/preload/savestate',
         ['tas'] = 'tas',
     },

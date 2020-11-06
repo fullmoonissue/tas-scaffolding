@@ -1,7 +1,6 @@
 .DEFAULT_GOAL := install
 
-SCAFFOLDING_VERSION=3.3.0
-SCAFFOLDING_URL=https://github.com/fullmoonissue/tas-scaffolding/tree/$(SCAFFOLDING_VERSION)
+SCAFFOLDING_VERSION=3.4.0
 
 install: ## [Install] Project dependencies
 	luarocks install mediator_lua --tree lua_modules

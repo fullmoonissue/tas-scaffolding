@@ -70,6 +70,33 @@ bizhawk-lfs:
 	@lua scripts/bizhawk-lfs.lua $(TAS_LFS) $(TAS_FOLDER)
 
 #
+# -- Task: describe-tas --
+#
+# >> Assign TAS infos <<
+#
+# Required variable
+# GAME (ex: "Devil Dice")
+# CONSOLE (ex: "PSX")
+# BIZHAWK (ex: "2.5.2")
+# CATEGORY (ex: "Any%")
+#
+# Example : make GAME="Devil Dice" CONSOLE="PSX" BIZHAWK="2.5.2" CATEGORY="Any%" describe-tas
+#
+
+describe-tas:
+	@echo "return {\n\
+    ['bizhawk_version'] = '$(BIZHAWK)',\n\
+    ['game_console'] = '$(CONSOLE)',\n\
+    ['game_name'] = '$(GAME)',\n\
+    ['scaffolding_version'] = '$(SCAFFOLDING_VERSION)',\n\
+}" > configuration/tas.lua
+	@sed 's/...game.../$(GAME)/' README.md > README_.md ; mv README_.md README.md
+	@sed 's/...console.../$(CONSOLE)/' README.md > README_.md ; mv README_.md README.md
+	@sed 's/...category.../$(CATEGORY)/' README.md > README_.md ; mv README_.md README.md
+	@sed 's/X.Y.Z/$(BIZHAWK)/' README.md > README_.md ; mv README_.md README.md
+	@sed 's/A.B.C/$(SCAFFOLDING_VERSION)/g' README.md > README_.md ; mv README_.md README.md
+
+#
 # -- Task: register --
 #
 # >> Register a new file for a specific tas <<

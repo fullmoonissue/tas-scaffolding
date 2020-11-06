@@ -69,6 +69,28 @@ bizhawk-lfs:
 	@lua scripts/bizhawk-lfs.lua $(TAS_LFS) $(TAS_FOLDER)
 
 #
+# -- Task: bk2-update-input-log --
+#
+# >> Update the "Input Log.txt" file into an existing bk2 archive <<
+#
+# ## Create the original bk2
+# Launch BizHawk, then your ROM and go to `File -> Movie -> Record Movie...`
+# Select the location of the archive, type Enter and go to `File -> Movie -> Stop Movie`
+#
+# Required software
+# 7zip : https://www.7-zip.org/download.html
+#
+# Required variable
+# BK2_NAME
+# PATH_INPUT_LOG
+#
+
+bk2-update-input-log:
+	@7z x $(PWD)/$(BK2_FOLDER)/$(BK2_NAME).bk2 -o$(PWD)/$(BK2_FOLDER)
+	@7za a -tzip $(PWD)/$(BK2_FOLDER)/$(BK2_NAME).bk2 $(PWD)/$(BK2_FOLDER)/Comments.txt $(PWD)/$(BK2_FOLDER)/Header.txt "$(PATH_INPUT_LOG)" $(PWD)/$(BK2_FOLDER)/Subtitles.txt $(PWD)/$(BK2_FOLDER)/SyncSettings.json
+	@rm -f $(PWD)/$(BK2_FOLDER)/Comments.txt $(PWD)/$(BK2_FOLDER)/Header.txt "$(PWD)/$(BK2_FOLDER)/Input Log.txt" $(PWD)/$(BK2_FOLDER)/Subtitles.txt $(PWD)/$(BK2_FOLDER)/SyncSettings.json
+
+#
 # -- Task: describe-tas --
 #
 # >> Assign TAS infos <<

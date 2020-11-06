@@ -272,14 +272,17 @@ An overlay is information displayed on the screen with a style, like :
 
 * The current frame
 * Values from the memory
+* Draw a HUD
 
 The library [mediator_lua](https://github.com/Olivine-Labs/mediator_lua) is used (installed
 by `make install`) but to avoid cross OS library preloading problem, the core file of the
 mediator, `mediator.lua`, is copied at the root of your TAS (during the scaffolding).
 
-The overlays which display the current frame and the tas infos are already created and displayed by default.
+Some overlays are available :
 
-Be aware that client.screenwidth() and client.screenheight() are not initially used to set the coordonates but a `gridValues` variable is used instead.
+* Display the current frame
+* Display the tas infos
+* Display a grid to layout a HUD
 
 #### Archive bk2
 

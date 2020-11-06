@@ -1,5 +1,9 @@
 local play = require('configuration/play')
 local currentTas = play['currentTas']
+if not currentTas then
+    console.clear()
+    console.log('>>> The value of "currentTas" has to be set in "configuration/play.lua" <<<')
+end
 local loadSlot = play['loadSlot']
 
 local paths = require('configuration/paths')

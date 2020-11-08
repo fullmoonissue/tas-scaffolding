@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := install
 
-SCAFFOLDING_VERSION=3.4.0
+SCAFFOLDING_VERSION=3.5.0
 
 install: ## [Install] Project dependencies
 	luarocks install mediator_lua --tree lua_modules

@@ -213,12 +213,6 @@ At this point, you are able to create a TAS, here are the steps :
             |
             -> input.lua (Tool to add a new input to send to Bizhawk)
         |
-        -> docs
-            |
-            -> bk2.md (Create / Update the bk2 archive)
-            |
-            -> publication.md (Show one way to create a youtube ready video after recording)
-        |
         -> plugins
             |
             -> bizhawk
@@ -236,6 +230,14 @@ At this point, you are able to create a TAS, here are the steps :
             -> overlay
                 |
                 -> collection.lua (Location where you will add your own overlays)
+                |
+                -> frameCount.lua (Overlay which displays the frame counter)
+                |
+                -> showGrid.lua (Overlay which displays a grid to help layouting a HUD)
+                |
+                -> tasInfos.lua (Overlay which displays the tas infos)
+                |
+                -> utils.lua (Functions / Values useful for HUD)
             |
             -> preload
                 |
@@ -256,8 +258,6 @@ At this point, you are able to create a TAS, here are the steps :
         -> tests (unit tests, @see "Development & Tests" section)
 
 ## Plugins
-
-Some additional goodies are present, here they are :
 
 #### Macro
 

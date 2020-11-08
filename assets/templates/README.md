@@ -1,61 +1,44 @@
-# ...game... on ...console...
+# Publication
 
-## TAS ...category...
+    Title : [TAS] ...game... : ...category... - ...console... - ...
 
-**Presentation of the game**
+    Url : ...
 
-_Coming soon..._
+    Description :
 
-**Publication**
+        ℹ️ About the run
 
-_Work in Progress_
+        * Emulator used : BizHawk X.Y.Z (https://github.com/TASVideos/BizHawk)
+        * TAS Scaffolding Project used : Version A.B.C (https://github.com/fullmoonissue/tas-scaffolding/tree/A.B.C)
+        * Source code of the tas : ...
+        * Aims for ...
 
-**About the run**
+        🏁 Tas of ...category...
 
-* Emulator used : BizHawk X.Y.Z
-* TAS Scaffolding Project used : Version [A.B.C](https://github.com/fullmoonissue/tas-scaffolding/tree/A.B.C)
-* [Source code](https://www.github.com/your-name/your-project-if-publicly-available)
-* Other ideas :
-  * 2 / 4 players
-  * Easy / Normal / Hard difficulty
-  * Aims for maximum score
-  * Aims for fastest time
-  * Takes damage and abuses death to save time
-  * Abuses programming errors
-  * Manipulates luck
-  * Entertains without sacrificing Frames
-  * Game version
-  * Game genre
-  * Other list here ([Movies by category](http://tasvideos.org/Movies.html))
+        ...
 
-**Gameplay**
+        📽️ HUD
 
-_Coming soon..._
+        ...
 
-**Tricks and Glitches**
+        📎 Useful RAM Watch Addresses
 
-_Coming soon..._
+        ...
 
-**Routing**
+        🎲 Strategies
 
-_Coming soon..._
+        ...
 
-**Stage by stage comments**
+        💪 Known / Possible Improvements
 
-_Coming soon..._
+        ...
 
-**Known / Possible Improvements**
+        🚩 TAS obsoleted
 
-_Coming soon..._
+        ...
 
-**Special Thanks**
+        🔗 Related TAS
 
-_Coming soon..._
+        ...
 
-**Screenshot Suggestions**
-
-_Coming soon..._
-
-**Useful RAM Watch Addresses**
-
-_Coming soon..._
+        🍿 Enjoy 🍿

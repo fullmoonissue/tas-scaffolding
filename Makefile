@@ -1,5 +1,3 @@
-.DEFAULT_GOAL := help
-
 build-scaffolding: ## [Build] Launch the scaffolding
 	@if [ '$(TAS_FOLDER)' == '' ]; then \
         echo "Call : make TAS_FOLDER=/path/to/your/tas build-scaffolding"; \

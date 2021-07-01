@@ -1,11 +1,9 @@
 # Files
-.idea
-.git
 .luacheckrc
 .tarignore
-tas-scaffolding.tar.gz
 
 # Folders
-docs
+.idea
+.git
 lua_modules
 tests

@@ -1,8 +1,13 @@
-.DEFAULT_GOAL := install
-
+# Current version of the tas-scaffolding project
 SCAFFOLDING_VERSION=3.5.0
 
-install: ## [Install] Project dependencies
+#
+# -- Task: install --
+#
+# >> Install dependencies used to setup the tas <<
+#
+
+install:
 	luarocks install mediator_lua --tree lua_modules
 	luarocks install luafilesystem --tree lua_modules
 
@@ -34,14 +39,52 @@ TAS_LFS=`lua -e "c=require('$(PATHS_FILE)'); print(c['tas']['files']);"`.lua
 # ### ### #
 
 #
+# -- Task: bizhawk-bk2-archive --
+#
+# >> Create the bk2 archive <<
+#
+# !! Required software !!
+# 7zip : https://www.7-zip.org/download.html
+#
+# !! Required variable(s) !!
+# BK2_NAME
+# PATH_COMMENTS
+# PATH_HEADER
+# PATH_INPUT_LOG
+# PATH_SUBTITLES
+# PATH_SYNC_SETTINGS
+#
+
+bizhawk-bk2-archive:
+	@7za a -tzip $(PWD)/$(BK2_FOLDER)/$(BK2_NAME).bk2 $(PATH_COMMENTS) $(PATH_HEADER) "$(PATH_INPUT_LOG)" $(PATH_SUBTITLES) $(PATH_SYNC_SETTINGS)
+
+#
+# -- Task: bizhawk-bk2-update-input-log --
+#
+# >> Update the "Input Log.txt" file into an existing bk2 archive <<
+#
+# !! Required software !!
+# 7zip : https://www.7-zip.org/download.html
+#
+# !! Required variable(s) !!
+# BK2_NAME
+# PATH_INPUT_LOG
+#
+
+bizhawk-bk2-update-input-log:
+	@7z x $(PWD)/$(BK2_FOLDER)/$(BK2_NAME).bk2 -o$(PWD)/$(BK2_FOLDER)
+	@make BK2_NAME=$(BK2_NAME) PATH_COMMENTS=$(PWD)/$(BK2_FOLDER)/Comments.txt PATH_HEADER=$(PWD)/$(BK2_FOLDER)/Header.txt PATH_INPUT_LOG=$(PATH_INPUT_LOG) PATH_SUBTITLES=$(PWD)/$(BK2_FOLDER)/Subtitles.txt PATH_SYNC_SETTINGS=$(PWD)/$(BK2_FOLDER)/SyncSettings.json bizhawk-bk2-archive
+	@rm -f $(PWD)/$(BK2_FOLDER)/Comments.txt $(PWD)/$(BK2_FOLDER)/Header.txt "$(PWD)/$(BK2_FOLDER)/Input Log.txt" $(PWD)/$(BK2_FOLDER)/Subtitles.txt $(PWD)/$(BK2_FOLDER)/SyncSettings.json
+
+#
 # -- Task: bizhawk-dump --
 #
 # >> Export your lua inputs into the BizHawk's `Input Log.txt` file <<
 #
-# Required variable
+# !! Required variable(s) !!
 # TAS : Name of the tas category (ex: any%)
 #
-# Optional variable (see "Variables" section above for explanations)
+# ?? Optional variable(s) (see "Variables" section above for explanations) ??
 # TAS_LFS
 # TAS_FOLDER
 # BK2_FOLDER
@@ -54,13 +97,17 @@ bizhawk-dump:
     fi
 	@[ -d $(BK2_FOLDER)/$(TAS) ] || mkdir $(BK2_FOLDER)/$(TAS)
 	@lua scripts/bizhawk-dump.lua $(TAS) $(TAS_LFS) $(TAS_FOLDER) $(BK2_FOLDER)
+	@if [ '$(COMMENTS_FILE)' != '' && '$(HEADER_FILE)' != '' && '$(SUBTITLES_FILE)' != '' && '$(SYNC_SETTINGS_FILE)' != '' ]; then \
+        @make BK2_NAME=$(TAS) PATH_COMMENTS=$(COMMENTS_FILE) PATH_HEADER=$(HEADER_FILE) PATH_INPUT_LOG=$(PWD)/$(BK2_FOLDER)/Input\ Log.txt PATH_SUBTITLES=$(SUBTITLES_FILE) PATH_SYNC_SETTINGS=$(SYNC_SETTINGS_FILE) bizhawk-bk2-archive; \
+        echo "Archive created !"; \
+    fi
 
 #
 # -- Task: bizhawk-lfs --
 #
 # >> (Re)Write the file listing the files for each tas <<
 #
-# Optional variable (see "Variables" section above for explanations)
+# ?? Optional variable(s) (see "Variables" section above for explanations) ??
 # TAS_LFS
 # TAS_FOLDER
 #
@@ -69,33 +116,11 @@ bizhawk-lfs:
 	@lua scripts/bizhawk-lfs.lua $(TAS_LFS) $(TAS_FOLDER)
 
 #
-# -- Task: bk2-update-input-log --
-#
-# >> Update the "Input Log.txt" file into an existing bk2 archive <<
-#
-# ## Create the original bk2
-# Launch BizHawk, then your ROM and go to `File -> Movie -> Record Movie...`
-# Select the location of the archive, type Enter and go to `File -> Movie -> Stop Movie`
-#
-# Required software
-# 7zip : https://www.7-zip.org/download.html
-#
-# Required variable
-# BK2_NAME
-# PATH_INPUT_LOG
-#
-
-bk2-update-input-log:
-	@7z x $(PWD)/$(BK2_FOLDER)/$(BK2_NAME).bk2 -o$(PWD)/$(BK2_FOLDER)
-	@7za a -tzip $(PWD)/$(BK2_FOLDER)/$(BK2_NAME).bk2 $(PWD)/$(BK2_FOLDER)/Comments.txt $(PWD)/$(BK2_FOLDER)/Header.txt "$(PATH_INPUT_LOG)" $(PWD)/$(BK2_FOLDER)/Subtitles.txt $(PWD)/$(BK2_FOLDER)/SyncSettings.json
-	@rm -f $(PWD)/$(BK2_FOLDER)/Comments.txt $(PWD)/$(BK2_FOLDER)/Header.txt "$(PWD)/$(BK2_FOLDER)/Input Log.txt" $(PWD)/$(BK2_FOLDER)/Subtitles.txt $(PWD)/$(BK2_FOLDER)/SyncSettings.json
-
-#
 # -- Task: describe-tas --
 #
 # >> Assign TAS infos <<
 #
-# Required variable
+# !! Required variable(s) !!
 # GAME (ex: "Devil Dice")
 # CONSOLE (ex: "PSX")
 # BIZHAWK (ex: "2.5.2")
@@ -122,11 +147,11 @@ describe-tas:
 #
 # >> Register a new file for a specific tas <<
 #
-# Required variable
+# !! Required variable(s) !!
 # TAS : Name of the tas (ex: any%)
 # FILE : Name of the file (ex: 0-init.lua)
 #
-# Optional variable (see "Variables" section above for explanations)
+# ?? Optional variable(s) (see "Variables" section above for explanations) ??
 # TAS_FOLDER
 # TAS_FILE_TEMPLATE
 #
@@ -145,17 +170,17 @@ register:
 # ### ### #
 
 # The next tasks will help to generate a youtube ready video after recording
-# >> Recording parameters often used : A/V Writer => AVI Writer ; Compressor => Codec Intel IYUV <<
+# > Recording parameters often used : A/V Writer => AVI Writer ; Compressor => Codec Intel IYUV
 
 # GAME is the name of the first recording file without extension
-# >> To prevent from errors (in make commands), you should avoid space into the name and prefer a slugified name
+# > To prevent from errors (in make commands), you should avoid space into the name and prefer a slugified name
 
 #
 # -- Task: video-convert-avi-to-mp4 --
 #
 # >> Convert from avi video (from Bizhawk) to mp4 video (for youtube) using ffmpeg <<
 #
-# Required variable
+# !! Required variable(s) !!
 # FFMPEG : Path to the ffmpeg binary (ex: ./ffmpeg)
 # GAME : @see above
 # CATEGORY : Category of the tas (ex: "any%")
@@ -169,7 +194,7 @@ video-convert-avi-to-mp4:
 #
 # >> Create one video by joining fragments using ffmpeg <<
 #
-# Required variable
+# !! Required variable(s) !!
 # FFMPEG : Path to the ffmpeg binary (ex: ./ffmpeg)
 # GAME : @see above
 # CATEGORY : Category of the tas (ex: "any%")
@@ -183,7 +208,7 @@ video-glue-parts:
 #
 # >> Create the file needed by ffmpeg to glue video parts together <<
 #
-# Required variable
+# !! Required variable(s) !!
 # GAME : @see above
 #
 

@@ -16,6 +16,7 @@
     - [Screenshots](#screenshots)
     - [Benchmark](#benchmark)
 - [Development & Tests](#development--tests)
+- [Changelog](#changelog)
 
 ## Explanation
 
@@ -401,3 +402,7 @@ make test
         Finally, reboot the core (Emulation -> Reboot Core) and check that the framecount overlay and the inputs are displayed
         Repeat 3a.
 ```
+
+## Changelog
+
+[Over here](./CHANGELOG.md)

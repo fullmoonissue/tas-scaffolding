@@ -169,8 +169,11 @@ register:
 #  Video  #
 # ### ### #
 
-# The next tasks will help to generate a youtube ready video after recording
-# > Recording parameters often used : A/V Writer => AVI Writer ; Compressor => Codec Intel IYUV
+# An easy setup to produce youtube ready videos in mp4 is to configure the output video that way :
+# > Recording parameters : Writer => FFMPEG Writer ; Video Format => MP4
+
+# The next tasks will help to generate a youtube ready video after recording (which will output an avi file)
+# > Recording parameters : A/V Writer => AVI Writer ; Compressor => Codec Intel IYUV
 
 # GAME is the name of the first recording file without extension
 # > To prevent from errors (in make commands), you should avoid space into the name and prefer a slugified name

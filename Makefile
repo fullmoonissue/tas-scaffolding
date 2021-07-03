@@ -1,8 +1,14 @@
-build-scaffolding: ## [Build] Launch the scaffolding
-	@if [ '$(TAS_FOLDER)' == '' ]; then \
-        echo "Call : make TAS_FOLDER=/path/to/your/tas build-scaffolding"; \
-        exit 1; \
-    fi
+#
+# -- Task: build-scaffolding --
+#
+# >> Create the scaffolding of a new tas <<
+#
+# !! Required variable !!
+# TAS_FOLDER : Absolute path of the folder where the scaffolding will be created
+#
+
+build-scaffolding:
+	@if [ '$(TAS_FOLDER)' == '' ]; then echo "Environment variable TAS_FOLDER missing"; exit 1; fi
 	[ -d $(TAS_FOLDER) ] || mkdir $(TAS_FOLDER)
 	rm -f tas-scaffolding.tar.gz
 	touch tas-scaffolding.tar.gz
@@ -17,17 +23,35 @@ build-scaffolding: ## [Build] Launch the scaffolding
 	    && mv assets/templates/Makefile Makefile \
 	    && mv assets/templates/.gitignore .gitignore \
 	    && make install \
-	    && cp lua_modules/share/lua/5.3/mediator.lua mediator.lua
-	@echo "\n\n==>> Before starting, you can change tas values in the file $(TAS_FOLDER)/configuration/tas.lua\n\n"
+	    && cp lua_modules/share/lua/5.*/mediator.lua mediator.lua
+	@echo "\n\n==>> Before starting, you can configure your tas with this command (example) : \n"
+	@echo "make GAME=\"Devil Dice\" CONSOLE=\"PSX\" BIZHAWK=\"2.5.2\" CATEGORY=\"Any%\" describe-tas\n\n"
 
-cs-check: ## [CS] Launch the check of the code style
-	luacheck --std=min+bizhawk assets/templates/new-tas-file.lua configuration core plugins scripts tas start.lua
+#
+# -- Task: code-style-check --
+#
+# >> Check if the code style is respected <<
+#
 
-install: ## [Install] In project and global dependencies (for development purpose)
-	luarocks install luafilesystem --tree lua_modules
-	luarocks install luacheck
-	luarocks install luaunit
+code-style-check:
+	selene assets/templates/new-tas-file.lua configuration core plugins scripts tests start.lua
 
-test: ## [Tests] Launch them all
-	lua tests/core/test_input.lua -v
-	lua tests/plugins/bizhawk/test_bizhawk.lua -v
+#
+# -- Task: install --
+#
+# >> Install dependencies used when developing <<
+#
+
+install:
+	luarocks install luaunit --tree lua_modules
+
+#
+# -- Task: test --
+#
+# >> Launch unit tests <<
+#
+
+LUA_TEST=lua -e 'package.path="./lua_modules/share/lua/5.1/?.lua;"..package.path;'
+test:
+	$(LUA_TEST) tests/core/test_input.lua -v
+	$(LUA_TEST) tests/plugins/bizhawk/test_bizhawk.lua -v

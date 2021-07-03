@@ -154,10 +154,12 @@ local joypadInputs = {
     },
 }
 
+-- selene: allow(unused_variable)
 function testMakeInputLogLines()
     lu.assertEquals(bizhawkInputLog, bizhawk.makeInputLogLines(joypadInputs))
 end
 
+-- selene: allow(unused_variable)
 function testMakeJoypadInputs()
     -- Weird : lu.assertEquals says that bizhawk.makeJoypadInputs(bizhawkInputLog) ~= joypadInputs
     -- But they are equals, so this is a walkaround => check tables at each frame
@@ -167,6 +169,7 @@ function testMakeJoypadInputs()
     end
 end
 
+-- selene: allow(unused_variable)
 function testLfsForBizhawk()
     local lfsTestFile = './tests/plugins/bizhawk/lfsTest'
     local f = io.open(lfsTestFile .. '.lua', 'w')

@@ -1,6 +1,7 @@
 local lu = require('luaunit')
 local input = require('core/input')
 
+-- selene: allow(unused_variable)
 function testQueuedInputs()
     input:reset()
     input:setPlayer(5)
@@ -87,6 +88,7 @@ function testQueuedInputs()
     )
 end
 
+-- selene: allow(unused_variable)
 function testCombinedInputs()
     input:reset()
     input:add(
@@ -148,6 +150,7 @@ function testCombinedInputs()
     )
 end
 
+-- selene: allow(unused_variable)
 function testMerge()
     input:reset()
     lu.assertEquals(

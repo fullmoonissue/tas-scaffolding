@@ -61,7 +61,7 @@ Inputs will be played at the wanted frame during the infinite loop calling the f
 Example :
 
 local joypadSet = {[2450] = {['P1 Select'] = true}}
-while (true) do
+while true do
     -- Retrieve the current frame ...
     local fc = emu.framecount()
 
@@ -137,7 +137,7 @@ return input:all()
 
 ### Technical difficulties
 
-To get the list of files for a particular TAS, a scan into the folder have to be done. Two methods exist :
+During a TAS, the list of the specific files (which compose it) have to be scanned. Two methods exist :
 
 * Using `io.popen` and execute `/bin/ls`
 * Using [lfs](https://github.com/keplerproject/luafilesystem) and the `dir` method
@@ -145,17 +145,13 @@ To get the list of files for a particular TAS, a scan into the folder have to be
 None of these options can be used because :
 
 * BizHawk forbid the method `io.popen`
-* When you launch `luarocks install lfs`, switch your OS, you will have a `.so` file or not (so not reliable).
+* When you install `lfs` (`luarocks install lfs`), switch your OS, you will have a `.so` file or not (so not reliable).
 
-`Lfs` is still used in the project but only for the host OS (not for BizHawk's running OS).
-
-To fix the listing issue, a `make` task use `lfs` to scan the folders and write the listing into
-a file. This file will be read as the "real" listing of files without properly doing a scan.
+To fix this listing issue, a `make` task scans the folders and write the listing into a dedicated file.
+This file will be read as the "real" listing of files without properly doing a scan.
 This one is `configuration/files.lua` and the `make` task to do this listing is : `make bizhawk-lfs`.
 
 ### Installation
-
-At this point, you are able to create a TAS, here are the steps :
 
 ```
 - Go to your working directory
@@ -368,8 +364,11 @@ You will find some needed code into these files :
 
 ## Development & Tests
 
+* [Selene](https://github.com/Kampfkarren/selene) : linter
+* [LuaUnit](https://github.com/bluebird75/luaunit) : unit-testing framework
+
 ```
-# Dev dependencies, "sudo" right might be asked
+# Dev dependencies
 make install
 
 # Check code style
@@ -390,17 +389,15 @@ make test
     a. Launch Parallels then BizHawk then a game
     b. Menu Tools -> Lua Console and then select test-scaffolding.lua file (previously created)
 3. Checks
-    3a. No tas file added
-        If an error displayed on the lua console
-        Then fix into test-tas-scaffolding, close the Lua Console and repeat 2b. (to recheck)
-        And once the fix is done, propagate it into the tas-scaffolding project
-    3b. New tas file added
-        Register a new file (make TAS=any% FILE=0-init.lua register, from test-tas-scaffolding folder)
-        Then add an input enough long to be viewed after (ex: input:start(cf + 650, 200) in tas/any%/0-init.lua)
-        Then update the value in configuration/play.lua (local currentTas = 'any%')
-        Then display inputs in BizHawk (View -> Display inputs)
-        Finally, reboot the core (Emulation -> Reboot Core) and check that the framecount overlay and the inputs are displayed
-        Repeat 3a.
+    Register a new file (make TAS=any% FILE=0-init.lua register, from test-tas-scaffolding project folder)
+    Then add an input enough long to be viewed after (ex: input:start(cf + 650, 200) in tas/any%/0-init.lua)
+    Then update the value in configuration/play.lua (local currentTas = 'any%')
+    Then display inputs in BizHawk (View -> Display inputs)
+    Finally, reboot the core (Emulation -> Reboot Core) and check that the inputs are displayed
+
+    If an error is displayed on the lua console
+    Then fix into test-tas-scaffolding project, close the Lua Console and repeat 2b. (to recheck)
+    And once the fix is done, propagate the fix into the tas-scaffolding project
 ```
 
 ## Changelog

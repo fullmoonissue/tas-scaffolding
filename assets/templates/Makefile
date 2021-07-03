@@ -9,7 +9,6 @@ SCAFFOLDING_VERSION=3.5.0
 
 install:
 	luarocks install mediator_lua --tree lua_modules
-	luarocks install luafilesystem --tree lua_modules
 
 # ### ### ### #
 #  Variables  #

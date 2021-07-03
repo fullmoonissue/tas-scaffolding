@@ -34,7 +34,7 @@ build-scaffolding:
 #
 
 code-style-check:
-	luacheck --std=min+bizhawk assets/templates/new-tas-file.lua configuration core plugins scripts tas start.lua
+	selene assets/templates/new-tas-file.lua configuration core plugins scripts tests start.lua
 
 #
 # -- Task: install --
@@ -43,9 +43,7 @@ code-style-check:
 #
 
 install:
-	luarocks install luafilesystem --tree lua_modules
-	luarocks install luacheck
-	luarocks install luaunit
+	luarocks install luaunit --tree lua_modules
 
 #
 # -- Task: test --
@@ -53,6 +51,7 @@ install:
 # >> Launch unit tests <<
 #
 
+LUA_TEST=lua -e 'package.path="./lua_modules/share/lua/5.1/?.lua;"..package.path;'
 test:
-	lua tests/core/test_input.lua -v
-	lua tests/plugins/bizhawk/test_bizhawk.lua -v
+	$(LUA_TEST) tests/core/test_input.lua -v
+	$(LUA_TEST) tests/plugins/bizhawk/test_bizhawk.lua -v

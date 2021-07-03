@@ -42,7 +42,7 @@ local function makeInputLogLines(bjInputs)
         local line = { '|    1,...|  128,  128,  128,  128,' }
 
         for _, p1Input in ipairs(p1Keys) do
-            if (bjInputs[currentFrame] and bjInputs[currentFrame][p1Input]) then
+            if bjInputs[currentFrame] and bjInputs[currentFrame][p1Input] then
                 line[#line + 1] = p1Inputs[p1Input]
             else
                 line[#line + 1] = bhc.NONE
@@ -52,7 +52,7 @@ local function makeInputLogLines(bjInputs)
         line[#line + 1] = '...|  128,  128,  128,  128,'
 
         for _, p2Input in ipairs(p2Keys) do
-            if (bjInputs[currentFrame] and bjInputs[currentFrame][p2Input]) then
+            if bjInputs[currentFrame] and bjInputs[currentFrame][p2Input] then
                 line[#line + 1] = p2Inputs[p2Input]
             else
                 line[#line + 1] = bhc.NONE
@@ -174,22 +174,18 @@ end
 
 -- Create and retrieve the file content needed to get the listing of files for each tas
 local function lfsForBizhawk(tasFolder)
-    local lfs = require('lfs')
     local contents = { 'return {' }
-    for folder in lfs.dir(tasFolder) do
-        if folder ~= '.' and folder ~= '..' then
-            local rTasFolder = tasFolder .. '/' .. folder
-            if lfs.attributes(rTasFolder).mode == 'directory' then
-                contents[#contents + 1] = '    [\'' .. folder .. '\'] = {'
-                for file in lfs.dir(rTasFolder) do
-                    if file ~= '.' and file ~= '..' then
-                        contents[#contents + 1] = '        \'' .. string.gsub(file, '.lua', '') .. '\','
-                    end
-                end
-                contents[#contents + 1] = '    },'
-            end
+    local lsTasCategories = io.popen('/bin/ls ' .. tasFolder)
+    for tasCategory in lsTasCategories:lines() do
+        contents[#contents + 1] = '    [\'' .. tasCategory .. '\'] = {'
+        local lsTasCategoryFiles = io.popen('/bin/ls ' .. tasFolder .. '/' .. tasCategory)
+        for file in lsTasCategoryFiles:lines() do
+            contents[#contents + 1] = '        \'' .. string.gsub(file, '.lua', '') .. '\','
         end
+        lsTasCategoryFiles:close()
+        contents[#contents + 1] = '    },'
     end
+    lsTasCategories:close()
     contents[#contents + 1] = '}'
 
     return table.concat(contents, "\n")

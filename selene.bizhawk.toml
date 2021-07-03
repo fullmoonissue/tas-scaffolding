@@ -1,0 +1,19 @@
+# Bizhawk global variables
+
+[client]
+any = true
+
+[console]
+any = true
+
+[emu]
+any = true
+
+[gui]
+any = true
+
+[joypad]
+any = true
+
+[savestate]
+any = true

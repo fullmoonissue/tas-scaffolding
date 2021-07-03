@@ -24,7 +24,8 @@ build-scaffolding:
 	    && mv assets/templates/.gitignore .gitignore \
 	    && make install \
 	    && cp lua_modules/share/lua/5.*/mediator.lua mediator.lua
-	@echo "\n\n==>> Before starting, you can change tas values in the file $(TAS_FOLDER)/configuration/tas.lua\n\n"
+	@echo "\n\n==>> Before starting, you can configure your tas with this command (example) : \n"
+	@echo "make GAME=\"Devil Dice\" CONSOLE=\"PSX\" BIZHAWK=\"2.5.2\" CATEGORY=\"Any%\" describe-tas\n\n"
 
 #
 # -- Task: code-style-check --

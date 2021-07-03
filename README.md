@@ -14,11 +14,12 @@
     - [Archive bk2](#archive-bk2)
     - [Preloads](#preloads)
     - [Screenshots](#screenshots)
+    - [Benchmark](#benchmark)
 - [Development & Tests](#development--tests)
 
 ## Explanation
 
-This project aims to help creating a TAS running on [BizHawk](https://github.com/TASVideos/BizHawk).
+This project aims to help in creating a TAS running on [BizHawk](https://github.com/TASVideos/BizHawk).
 
 ### Warning
 
@@ -230,6 +231,10 @@ tas-scaffolding
         |
         -> input.lua (Tool to add a new input to send to Bizhawk)
     |
+    -> db
+        |
+        -> *.db (All your SQLite databases)
+    |
     -> plugins
         |
         -> bizhawk
@@ -349,6 +354,16 @@ return {
     [690] = 'C:\\Users\\your-username\\Documents\\main_screen.png',
 }
 ```
+
+### Benchmark
+
+If you want to realise a benchmark (ex: a tiny brute-force operation, write down results of multiple attempts, ...),
+some code have to be written to discuss with a SQLite database.
+
+You will find some needed code into these files :
+
+- `plugins/benchmark/scripts.lua` (create database, get the next record, ...)
+- `plugins/benchmark/setup.lua` (code which will call the scripts about the benchmarking)
 
 ## Development & Tests
 

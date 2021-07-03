@@ -3,3 +3,11 @@ configuration/play.lua
 
 # Rocks installed from make install
 lua_modules
+
+# SQLite databases
+db/*
+!db/.gitkeep
+
+# Videos of publications
+assets/publication/videos/*
+!assets/publication/videos/.gitkeep

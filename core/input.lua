@@ -22,7 +22,7 @@ function Input:add(frame, iterations, joypad)
     for i = 1, (iterations or 1) do
         currentFrame = tonumber(frame + (i - 1))
 
-        if (not self.bag[currentFrame]) then
+        if not self.bag[currentFrame] then
             self.bag[currentFrame] = {}
         end
 

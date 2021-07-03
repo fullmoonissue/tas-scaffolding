@@ -6,13 +6,13 @@ local function rPrint(s, l, i)
     -- recursive Print (structure, limit, indent)
     l = (l) or 100
     i = i or "" -- default item limit, indent string
-    if (l < 1) then
+    if l < 1 then
         print "ERROR: Item limit reached."
         return l - 1
     end
 
     local ts = type(s)
-    if (ts ~= "table") then
+    if ts ~= "table" then
         print(i, ts, s)
         return l - 1
     end
@@ -22,7 +22,7 @@ local function rPrint(s, l, i)
     for k, v in pairs(s) do
         -- print "[KEY] VALUE"
         l = rPrint(v, l, i .. "\t[" .. tostring(k) .. "]")
-        if (l < 0) then
+        if l < 0 then
             break
         end
     end

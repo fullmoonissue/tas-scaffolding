@@ -1,5 +1,5 @@
 # Current version of the tas-scaffolding project
-SCAFFOLDING_VERSION=3.5.0
+SCAFFOLDING_VERSION=3.6.0
 
 #
 # -- Task: install --

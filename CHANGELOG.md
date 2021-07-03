@@ -5,9 +5,19 @@
 - Add some code about a way to realize a (sqlite) benchmark
 - Add text about recording to mp4
 
+### Fix
+- Fix code style
+
+### Replace
+- Replace Luacheck by Selene
+
+### Remove
+- Remove Luafilesystem
+
 ### Update
 - Update the bk2 commands (split)
-- Update the documentation on Makefile tasks
+- Update the documentation
+- Update the installation of LuaUnit (now locally, no more globally)
 - Update the text after scaffolding
 - Update the license years
 

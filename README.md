@@ -31,6 +31,8 @@ This project was created with the following configuration :
 * Code running on MacOS
 * BizHawk running on Windows 10 (with Parallels)
 * The ~/Desktop folder is the bridge between Mac and Windows
+
+More infos in the HISTORY.md file
 ```
 
 ### Introduction
@@ -75,7 +77,7 @@ end
 ```
 
 The huge lua table can be build by the concatenation of lua tables coming from multiple files
-(it's a cleaner way that having all in one file).
+(it's a cleaner way rather than having all in one file).
 
 ```
 Example (of file naming) :

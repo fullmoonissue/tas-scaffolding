@@ -1,3 +1,12 @@
+<a name="3.6.1"></a>
+## [3.6.1] - 2021-08-31
+### Add
+- Add the history of the project
+
+### Update
+- Update documentation
+
+
 <a name="3.6.0"></a>
 ## [3.6.0] - 2021-07-03
 ### Add

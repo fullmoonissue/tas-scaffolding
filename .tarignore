@@ -1,9 +1,13 @@
 # Files
 .luacheckrc
 .tarignore
+CHANGELOG.md
+HISTORY.md
+selene.bizhawk.toml
+selene.toml
 
 # Folders
-.idea
 .git
+.idea
 lua_modules
 tests

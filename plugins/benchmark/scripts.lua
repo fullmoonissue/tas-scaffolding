@@ -34,7 +34,7 @@
 -- local function retrieveNext()
 --     SQL.opendatabase('db/benchmark.db')
 --     local nextBenchmark = SQL.readcommand(
---         'SELECT id, level, stage from benchmark WHERE result = 0 ORDER BY level asc, stage asc LIMIT 1'
+--         'SELECT id, level, stage FROM benchmark WHERE result = 0 ORDER BY level asc, stage asc LIMIT 1'
 --     )
 --
 --     if not nextBenchmark['id 0'] then

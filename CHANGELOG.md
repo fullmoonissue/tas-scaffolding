@@ -1,3 +1,11 @@
+<a name="3.7.0"></a>
+## [3.7.0] - 2021-09-01
+### Update
+- Handle screenshot plugin with mediator
+- Move the mediator::subscribe method (can't be written twice)
+- Update the way how to setup the screenshot plugin
+
+
 <a name="3.6.1"></a>
 ## [3.6.1] - 2021-08-31
 ### Add

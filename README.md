@@ -296,9 +296,7 @@ An overlay is information displayed on the screen with a style, like :
 * Values from the memory
 * Draw a HUD
 
-The library [mediator_lua](https://github.com/Olivine-Labs/mediator_lua) is used (installed
-by `make install`) but to avoid cross OS library preloading problem, the core file of the
-mediator, `mediator.lua`, is copied at the root of your TAS (during the scaffolding).
+The library [mediator_lua](https://github.com/Olivine-Labs/mediator_lua) is used but to avoid cross OS library preloading problem, the core file of the mediator, `mediator.lua`, is copied at the root of your TAS (during the scaffolding).
 
 Some overlays are available :
 
@@ -342,12 +340,12 @@ return {
 
 If you want to do a screenshot of a specific frame (or many frames) :
 
-* Fill the lua table in `plugins/screenshot/collection.lua`
+* Fill the lua table (frameNumberToImagePath) in `plugins/screenshot/collection.lua`
 
-The file `plugins/screenshot/collection.lua` have to look like this :
+The variable `frameNumberToImagePath` have to look like this :
 
 ```
-return {
+local frameNumberToImagePath = {
     -- Frame number as key ; Path to your future screenshot as value
     [245] = 'C:\\Users\\your-username\\Documents\\screenshot_245.png',
     [690] = 'C:\\Users\\your-username\\Documents\\main_screen.png',

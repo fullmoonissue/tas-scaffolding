@@ -21,3 +21,6 @@ macro.example_macro_with_custom_inputs(3000, 7)
 return input:all()
 
 ]]--
+
+-- !! Default line, to be replaced !!
+return require('core/input'):all()

@@ -1,13 +1,37 @@
+-- TAS configuration
 local play = require('configuration/play')
+-- Paths configuration
+local paths = require('configuration/paths')
+
+-- ## Current TAS category assigned ?
 local currentTas = play['currentTas']
 if not currentTas then
     console.clear()
     console.log('>>> The value of "currentTas" has to be set in "configuration/play.lua" <<<')
 end
+
+-- ## Load a savestate (file), if defined
+local preloads = require(paths['collection']['preload'])
+if preloads[currentTas] ~= nil then
+    savestate.load(table.concat({ paths['folder']['savestate'], preloads[currentTas] }, '/'))
+end
+
+-- ## Load a savestate (slot), if defined
 local loadSlot = play['loadSlot']
+if loadSlot ~= nil then
+    savestate.loadslot(loadSlot)
+end
 
-local paths = require('configuration/paths')
+-- ## Configure subscribers
+local subscriberOverlay = require(paths['collection']['overlay']).subscribe()
+local subscriberScreenshot = require(paths['collection']['screenshot']).subscribe()
+local pubSub = require('mediator')()
+pubSub:subscribe({ 'frame.current' }, function(fc)
+    subscriberOverlay(fc)
+    subscriberScreenshot(fc)
+end)
 
+-- ## Retrieve the inputs of the current tas' category
 local files = {}
 local cFiles = require(paths['tas']['files'])
 if cFiles[currentTas] ~= nil then
@@ -15,45 +39,22 @@ if cFiles[currentTas] ~= nil then
         files[#files + 1] = table.concat({ paths['folder']['tas'], currentTas, file }, '/')
     end
 end
-
--- Retrieve the inputs of the current tas' category
 local joypadSet = require('core/input').merge(files)
 
--- Preload a savestate, if defined
-local preloads = require(paths['collection']['preload'])
-if preloads[currentTas] ~= nil then
-    savestate.load(table.concat({ paths['folder']['savestate'], preloads[currentTas] }, '/'))
-end
-
--- Load the current savestate, if defined
-if loadSlot ~= nil then
-    savestate.loadslot(loadSlot)
-end
-
--- Add overlays
-local mediator = require('mediator')()
-require('plugins/overlay/collection').applySubscriptions(mediator)
-
--- @see Plugins > Screenshots in the README.md for further explanations
-local screenshotConfiguration = require(paths['collection']['screenshot'])
-
+-- ## Infinite loop
+local fc
 while true do
-    -- Retrieve the current frame ...
-    local fc = emu.framecount()
+    -- 1. Retrieve the current frame
+    fc = emu.framecount()
 
-    -- ... then dispatch it (for overlays) ...
-    mediator:publish({ 'frame.displayed' }, fc)
+    -- 2. Dispatch 'frame.current' event
+    pubSub:publish({ 'frame.current' }, fc)
 
-    -- ... then send the configured inputs to Bizhawk ...
+    -- 3. If defined, send the configured inputs to Bizhawk
     if joypadSet[fc] then
         joypad.set(joypadSet[fc])
     end
 
-    -- ... then do a screenshot if set for this frame ...
-    if screenshotConfiguration[fc] then
-        client.screenshot(screenshotConfiguration[fc])
-    end
-
-    -- ... and forward to the next frame
+    -- 4. Forward to the next frame
     emu.frameadvance()
 end

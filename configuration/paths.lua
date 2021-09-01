@@ -3,6 +3,7 @@
 
 return {
     ['collection'] = {
+        ['overlay'] = 'plugins/overlay/collection',
         ['preload'] = 'plugins/preload/collection',
         ['screenshot'] = 'plugins/screenshot/collection',
     },

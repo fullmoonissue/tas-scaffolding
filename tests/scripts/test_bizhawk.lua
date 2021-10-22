@@ -1,5 +1,7 @@
 local lu = require('luaunit')
-local bizhawk = require('plugins/bizhawk/bizhawk')
+local bizhawkDump = require('scripts/bizhawk-dump')
+local bizhawkLfs = require('scripts/bizhawk-lfs')
+local bizhawkParse = require('scripts/bizhawk-parse')
 
 local bizhawkInputLog = '[Input]' .. "\n"
     .. 'LogKey:#Disc Select|Open|Close|Reset|#P1 LStick X|P1 LStick Y|P1 RStick X|P1 RStick Y|P1 Up|P1 Down|P1 Left|P1 Right|P1 Select|P1 Start|P1 Square|P1 Triangle|P1 Circle|P1 Cross|P1 L1|P1 R1|P1 L2|P1 R2|P1 L3|P1 R3|P1 MODE|#P2 LStick X|P2 LStick Y|P2 RStick X|P2 RStick Y|P2 Up|P2 Down|P2 Left|P2 Right|P2 Select|P2 Start|P2 Square|P2 Triangle|P2 Circle|P2 Cross|P2 L1|P2 R1|P2 L2|P2 R2|P2 L3|P2 R3|P2 MODE|' .. "\n"
@@ -156,14 +158,14 @@ local joypadInputs = {
 
 -- selene: allow(unused_variable)
 function testMakeInputLogLines()
-    lu.assertEquals(bizhawkInputLog, bizhawk.makeInputLogLines(joypadInputs))
+    lu.assertEquals(bizhawkInputLog, bizhawkDump.makeInputLogLines(joypadInputs))
 end
 
 -- selene: allow(unused_variable)
 function testMakeJoypadInputs()
     -- Weird : lu.assertEquals says that bizhawk.makeJoypadInputs(bizhawkInputLog) ~= joypadInputs
     -- But they are equals, so this is a walkaround => check tables at each frame
-    local createdJoypadInputs = bizhawk.makeJoypadInputs(bizhawkInputLog)
+    local createdJoypadInputs = bizhawkParse.makeJoypadInputs(bizhawkInputLog)
     for frame, inputs in pairs(joypadInputs) do
         lu.assertEquals(inputs, createdJoypadInputs[frame])
     end
@@ -171,9 +173,9 @@ end
 
 -- selene: allow(unused_variable)
 function testLfsForBizhawk()
-    local lfsTestFile = './tests/plugins/bizhawk/lfsTest'
+    local lfsTestFile = './tests/scripts/lfsTest'
     local f = io.open(lfsTestFile .. '.lua', 'w')
-    f:write(bizhawk.lfsForBizhawk('tests/tas'))
+    f:write(bizhawkLfs.lfsForBizhawk('tests/tas'))
     f:close()
 
     lu.assertEquals(2, #require(lfsTestFile)['any%'])

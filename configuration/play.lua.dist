@@ -2,11 +2,11 @@
 -- Requirements : have to be an integer between 0 and 9
 local loadSlot = nil
 
--- Current Tas
+-- Current category
 -- Requirements : have to be a string (and the name of a folder in the tas folder)
-local currentTas = nil
+local currentCategory = nil
 
 return {
-    ['currentTas'] = currentTas,
+    ['currentCategory'] = currentCategory,
     ['loadSlot'] = loadSlot,
 }

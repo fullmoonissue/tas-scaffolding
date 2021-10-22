@@ -1,3 +1,18 @@
+<a name="4.0.0"></a>
+## [4.0.0] - 2022-02-05
+### Add
+- Add two default macros (leftRight & upDown)
+
+### Update
+- Update License date
+- Rewrite Makefile (the project one & the one after scaffolding)
+- Update documentation and many others files
+- Reorganize folders (and inside files) of src, scripts and configuration
+- Minimize the infinite loop of the start.lua file
+
+### Remove
+- Remove almost all overlays
+
 <a name="3.7.0"></a>
 ## [3.7.0] - 2021-09-01
 ### Update
@@ -50,7 +65,7 @@
 ## [3.4.0] - 2020-11-06
 ### Add
 - Add 'make' task to fill the tas infos file and replace values in the Readme
-- Add a check and a console message if the current tas is not set
+- Add a check and a console message if the current tas category is not set
 - Add tooling about publication on youtube
 
 ### Remove

@@ -1,3 +1,3 @@
-configuration/play.lua
 lua_modules
-tests/plugins/bizhawk/lfsTest.lua
+
+tests/scripts/lfsTest.lua

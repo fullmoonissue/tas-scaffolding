@@ -1,5 +1,6 @@
 local lu = require('luaunit')
-local input = require('core/input')
+local input = require('tas/joypadInputs')
+local utils = require('src/utils')
 
 -- selene: allow(unused_variable)
 function testQueuedInputs()
@@ -166,7 +167,7 @@ function testMerge()
                 ['P1 Select'] = true,
             },
         },
-        input.merge({
+        utils.merge({
             'tests/tas/any%/0-init',
             'tests/tas/any%/1-exit',
         })

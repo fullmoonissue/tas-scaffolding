@@ -2,7 +2,7 @@
 -- Usage in test file :
 -- >> local rPrint = require('tests/rPrint')
 -- >> rPrint('whatever')
-local function rPrint(s, l, i)
+local function rPrint (s, l, i)
     -- recursive Print (structure, limit, indent)
     l = (l) or 100
     i = i or "" -- default item limit, indent string

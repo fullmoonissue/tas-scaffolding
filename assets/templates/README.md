@@ -9,15 +9,31 @@
         ℹ️ About the run
 
         * Emulator used : BizHawk X.Y.Z (https://github.com/TASVideos/BizHawk)
-        * TAS Scaffolding Project used : Version A.B.C (https://github.com/fullmoonissue/tas-scaffolding/tree/A.B.C)
+        * TAS Scaffolding Project used : Version A.B.C (https://github.com/fullmoonissue/tas-scaffolding)
         * Source code of the tas : ...
-        * Aims for ...
+        * Category : ...category...
 
-        🏁 Tas of ...category...
+        🎮 About the Game (Wikipedia)
 
         ...
 
-        📽️ HUD
+        🏁 TAS of ...category...
+
+        ...
+
+        🏁 Results
+
+        ...
+
+        ⏱️ Timecode & Details
+
+        ...
+
+        🎥 Video
+
+        ...
+
+        📽️ OSD
 
         ...
 
@@ -26,6 +42,10 @@
         ...
 
         🎲 Strategies
+
+        ...
+
+        📚 Resources
 
         ...
 

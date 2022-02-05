@@ -1,218 +1,219 @@
-# Current version of the tas-scaffolding project
-SCAFFOLDING_VERSION=3.7.0
+.DEFAULT_GOAL := help
 
-#
-# -- Task: install --
-#
-# >> Install dependencies used to setup the tas <<
-#
+SCAFFOLDING_VERSION=4.0.0
+
+help:
+	@awk 'BEGIN {FS = ":##"; printf "\033[36m\033[0m\n"} /^##/ { printf "\033[36m%-20s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST) | sed "s/## //g"
+
+PATHS_FILE=configuration/paths
+BK2_FOLDER=`lua -e "c=require('$(PATHS_FILE)'); print(c['folder']['bk2']);"`
+PUBLICATION_FOLDER=`lua -e "c=require('$(PATHS_FILE)'); print(c['folder']['publication']);"`
+TAS_FILE_TEMPLATE=`lua -e "c=require('$(PATHS_FILE)'); print(c['template']['newFile']);"`
+TAS_FOLDER=`lua -e "c=require('$(PATHS_FILE)'); print(c['folder']['tas']);"`
+TAS_LFS=`lua -e "c=require('$(PATHS_FILE)'); print(c['tas']['files']);"`.lua
+
+## +-----------------+
+## |  Task: install  |
+## +-----------------+
+##
+## >> Install dependencies used to setup a new first TAS
+##
 
 install:
 	luarocks install mediator_lua --tree lua_modules
 
-# ### ### ### #
-#  Variables  #
-# ### ### ### #
+## +------------------------------------+
+## |  Task: bizhawk-bk2-archive-create  |
+## +------------------------------------+
+##
+## >> Create the bk2 archive
+##
+## * Required environment variables
+##
+## - TAS_CATEGORY
+## - BK2_PATH_COMMENTS
+## - BK2_PATH_HEADER
+## - BK2_PATH_INPUT_LOG
+## - BK2_PATH_SUBTITLES
+## - BK2_PATH_SYNC_SETTINGS
+##
+## * Optional environment variable
+##
+## - BK2_FOLDER
+##
 
-# Path to the file containing all the paths to important files or folders
-PATHS_FILE=configuration/paths
+bizhawk-bk2-archive-create:
+	@7za a -tzip $(PWD)/$(BK2_FOLDER)/$(TAS_CATEGORY).bk2 $(BK2_PATH_COMMENTS) $(BK2_PATH_HEADER) "$(BK2_PATH_INPUT_LOG)" $(BK2_PATH_SUBTITLES) $(BK2_PATH_SYNC_SETTINGS)
 
-# Path to the bk2 folder (see "Archive bk2" section into the README.md of tas-scaffolding project)
-BK2_FOLDER=`lua -e "c=require('$(PATHS_FILE)'); print(c['folder']['bk2']);"`
+## +-------------------------------------+
+## |  Task: bizhawk-bk2-archive-extract  |
+## +-------------------------------------+
+##
+## >> Extract the bk2 archive
+##
+## * Required environment variable
+##
+## - TAS_CATEGORY
+##
+## * Optional environment variable
+##
+## - BK2_FOLDER
+##
 
-# Path to the publication folder
-PUBLICATION_FOLDER=`lua -e "c=require('$(PATHS_FILE)'); print(c['folder']['publication']);"`
+bizhawk-bk2-archive-extract:
+	@[ -d $(PWD)/$(BK2_FOLDER))/$(TAS_CATEGORY) ] || mkdir $(PWD)/$(BK2_FOLDER))/$(TAS_CATEGORY)
+	@7z x $(PWD)/$(BK2_FOLDER)/$(TAS_CATEGORY).bk2 -o$(PWD)/$(BK2_FOLDER))/$(TAS_CATEGORY)
 
-# Path to the tas file template (see "Introduction" section into the README.md of tas-scaffolding project)
-TAS_FILE_TEMPLATE=`lua -e "c=require('$(PATHS_FILE)'); print(c['template']['newFile']);"`
-
-# Path to the tas folder (see "Introduction" section into the README.md of tas-scaffolding project)
-TAS_FOLDER=`lua -e "c=require('$(PATHS_FILE)'); print(c['folder']['tas']);"`
-
-# Path to the file which list the files for each tas
-# (see "Technical difficulties" section into the README.md of tas-scaffolding project)
-TAS_LFS=`lua -e "c=require('$(PATHS_FILE)'); print(c['tas']['files']);"`.lua
-
-# ### ### #
-# BizHawk #
-# ### ### #
-
-#
-# -- Task: bizhawk-bk2-archive --
-#
-# >> Create the bk2 archive <<
-#
-# !! Required software !!
-# 7zip : https://www.7-zip.org/download.html
-#
-# !! Required variable(s) !!
-# BK2_NAME
-# PATH_COMMENTS
-# PATH_HEADER
-# PATH_INPUT_LOG
-# PATH_SUBTITLES
-# PATH_SYNC_SETTINGS
-#
-
-bizhawk-bk2-archive:
-	@7za a -tzip $(PWD)/$(BK2_FOLDER)/$(BK2_NAME).bk2 $(PATH_COMMENTS) $(PATH_HEADER) "$(PATH_INPUT_LOG)" $(PATH_SUBTITLES) $(PATH_SYNC_SETTINGS)
-
-#
-# -- Task: bizhawk-bk2-update-input-log --
-#
-# >> Update the "Input Log.txt" file into an existing bk2 archive <<
-#
-# !! Required software !!
-# 7zip : https://www.7-zip.org/download.html
-#
-# !! Required variable(s) !!
-# BK2_NAME
-# PATH_INPUT_LOG
-#
+## +--------------------------------------+
+## |  Task: bizhawk-bk2-update-input-log  |
+## +--------------------------------------+
+##
+## >> Update the "Input Log.txt" file into an existing bk2 archive
+##
+## * Required environment variables
+##
+## - TAS_CATEGORY
+## - BK2_PATH_INPUT_LOG
+##
+## * Optional environment variable
+##
+## - BK2_FOLDER
+##
 
 bizhawk-bk2-update-input-log:
-	@7z x $(PWD)/$(BK2_FOLDER)/$(BK2_NAME).bk2 -o$(PWD)/$(BK2_FOLDER)
-	@make BK2_NAME=$(BK2_NAME) PATH_COMMENTS=$(PWD)/$(BK2_FOLDER)/Comments.txt PATH_HEADER=$(PWD)/$(BK2_FOLDER)/Header.txt PATH_INPUT_LOG=$(PATH_INPUT_LOG) PATH_SUBTITLES=$(PWD)/$(BK2_FOLDER)/Subtitles.txt PATH_SYNC_SETTINGS=$(PWD)/$(BK2_FOLDER)/SyncSettings.json bizhawk-bk2-archive
+	@make TAS_CATEGORY=$(TAS_CATEGORY) bizhawk-bk2-archive-extract
+	@make TAS_CATEGORY=$(TAS_CATEGORY) BK2_PATH_COMMENTS=$(PWD)/$(BK2_FOLDER)/Comments.txt BK2_PATH_HEADER=$(PWD)/$(BK2_FOLDER)/Header.txt BK2_PATH_INPUT_LOG=$(BK2_PATH_INPUT_LOG) BK2_PATH_SUBTITLES=$(PWD)/$(BK2_FOLDER)/Subtitles.txt BK2_PATH_SYNC_SETTINGS=$(PWD)/$(BK2_FOLDER)/SyncSettings.json bizhawk-bk2-archive-create
 	@rm -f $(PWD)/$(BK2_FOLDER)/Comments.txt $(PWD)/$(BK2_FOLDER)/Header.txt "$(PWD)/$(BK2_FOLDER)/Input Log.txt" $(PWD)/$(BK2_FOLDER)/Subtitles.txt $(PWD)/$(BK2_FOLDER)/SyncSettings.json
 
-#
-# -- Task: bizhawk-dump --
-#
-# >> Export your lua inputs into the BizHawk's `Input Log.txt` file <<
-#
-# !! Required variable(s) !!
-# TAS : Name of the tas category (ex: any%)
-#
-# ?? Optional variable(s) (see "Variables" section above for explanations) ??
-# TAS_LFS
-# TAS_FOLDER
-# BK2_FOLDER
-#
+## +----------------------+
+## |  Task: bizhawk-dump  |
+## +----------------------+
+##
+## >> Export your lua inputs into the BizHawk's `Input Log.txt` file
+##
+## * Required environment variable
+##
+## - TAS_CATEGORY
+##
+## * Optional environment variables
+##
+## - TAS_LFS
+## - TAS_FOLDER
+## - BK2_FOLDER
+##
 
 bizhawk-dump:
-	@if [ '$(TAS)' == '' ]; then \
-        echo "Call : make TAS=any% bizhawk-dump"; \
+	@if [ '$(TAS_CATEGORY)' == '' ]; then \
+        echo "Call : make TAS_CATEGORY=any% bizhawk-dump"; \
         exit 1; \
     fi
-	@[ -d $(BK2_FOLDER)/$(TAS) ] || mkdir $(BK2_FOLDER)/$(TAS)
-	@lua scripts/bizhawk-dump.lua $(TAS) $(TAS_LFS) $(TAS_FOLDER) $(BK2_FOLDER)
+	@[ -d $(BK2_FOLDER)/$(TAS_CATEGORY) ] || mkdir $(BK2_FOLDER)/$(TAS_CATEGORY)
+	@lua scripts/bizhawk-dump.lua $(TAS_CATEGORY) $(TAS_LFS) $(TAS_FOLDER) $(BK2_FOLDER)
 	@if [ '$(COMMENTS_FILE)' != '' && '$(HEADER_FILE)' != '' && '$(SUBTITLES_FILE)' != '' && '$(SYNC_SETTINGS_FILE)' != '' ]; then \
-        @make BK2_NAME=$(TAS) PATH_COMMENTS=$(COMMENTS_FILE) PATH_HEADER=$(HEADER_FILE) PATH_INPUT_LOG=$(PWD)/$(BK2_FOLDER)/Input\ Log.txt PATH_SUBTITLES=$(SUBTITLES_FILE) PATH_SYNC_SETTINGS=$(SYNC_SETTINGS_FILE) bizhawk-bk2-archive; \
+        @make TAS_CATEGORY=$(TAS_CATEGORY) BK2_PATH_COMMENTS=$(COMMENTS_FILE) BK2_PATH_HEADER=$(HEADER_FILE) BK2_PATH_INPUT_LOG=$(PWD)/$(BK2_FOLDER)/Input\ Log.txt BK2_PATH_SUBTITLES=$(SUBTITLES_FILE) BK2_PATH_SYNC_SETTINGS=$(SYNC_SETTINGS_FILE) bizhawk-bk2-archive-create; \
         echo "Archive created !"; \
     fi
 
-#
-# -- Task: bizhawk-lfs --
-#
-# >> (Re)Write the file listing the files for each tas <<
-#
-# ?? Optional variable(s) (see "Variables" section above for explanations) ??
-# TAS_LFS
-# TAS_FOLDER
-#
+## +-----------------------+
+## |  Task: bizhawk-parse  |
+## +-----------------------+
+##
+## >> Export your BizHawk's `Input Log.txt` file into lua inputs
+##
+## * Required environment variable
+##
+## - TAS_CATEGORY
+##
+## * Optional environment variables
+##
+## - TAS_FOLDER
+## - BK2_FOLDER
+##
+
+bizhawk-parse:
+	@if [ '$(TAS_CATEGORY)' == '' ]; then \
+        echo "Call : make TAS_CATEGORY=any% bizhawk-parse"; \
+        exit 1; \
+    fi
+	@[ -d $(TAS_FOLDER)/$(TAS_CATEGORY) ] || mkdir $(TAS_FOLDER)/$(TAS_CATEGORY)
+	@lua scripts/bizhawk-parse.lua $(TAS_FOLDER) $(TAS_CATEGORY) "$(PWD)/$(BK2_FOLDER)/$(TAS_CATEGORY)/Input Log.txt"
+
+## +---------------------+
+## |  Task: bizhawk-lfs  |
+## +---------------------+
+##
+## >> (Re)Write the file listing the files for each TAS category
+##
+## * Optional environment variables
+##
+## - TAS_LFS
+## - TAS_FOLDER
+##
 
 bizhawk-lfs:
 	@lua scripts/bizhawk-lfs.lua $(TAS_LFS) $(TAS_FOLDER)
 
-#
-# -- Task: describe-tas --
-#
-# >> Assign TAS infos <<
-#
-# !! Required variable(s) !!
-# GAME (ex: "Devil Dice")
-# CONSOLE (ex: "PSX")
-# BIZHAWK (ex: "2.5.2")
-# CATEGORY (ex: "Any%")
-#
-# Example : make GAME="Devil Dice" CONSOLE="PSX" BIZHAWK="2.5.2" CATEGORY="Any%" describe-tas
-#
-
-describe-tas:
-	@echo "return {\n\
-    ['bizhawk_version'] = '$(BIZHAWK)',\n\
-    ['game_console'] = '$(CONSOLE)',\n\
-    ['game_name'] = '$(GAME)',\n\
-    ['scaffolding_version'] = '$(SCAFFOLDING_VERSION)',\n\
-}" > configuration/tas.lua
-	@sed 's/...game.../$(GAME)/' README.md > README_.md ; mv README_.md README.md
-	@sed 's/...console.../$(CONSOLE)/' README.md > README_.md ; mv README_.md README.md
-	@sed 's/...category.../$(CATEGORY)/' README.md > README_.md ; mv README_.md README.md
-	@sed 's/X.Y.Z/$(BIZHAWK)/' README.md > README_.md ; mv README_.md README.md
-	@sed 's/A.B.C/$(SCAFFOLDING_VERSION)/g' README.md > README_.md ; mv README_.md README.md
-
-#
-# -- Task: register --
-#
-# >> Register a new file for a specific tas <<
-#
-# !! Required variable(s) !!
-# TAS : Name of the tas (ex: any%)
-# FILE : Name of the file (ex: 0-init.lua)
-#
-# ?? Optional variable(s) (see "Variables" section above for explanations) ??
-# TAS_FOLDER
-# TAS_FILE_TEMPLATE
-#
+## +------------------+
+## |  Task: register  |
+## +------------------+
+##
+## >> Register a new file for a specific TAS
+##
+## * Required environment variables
+##
+## - TAS_CATEGORY
+## - FILE
+##
+## * Optional environment variables
+##
+## - TAS_FOLDER
+## - TAS_FILE_TEMPLATE
+##
 
 register:
-	@if [ '$(TAS)' == '' ] || [ '$(FILE)' == '' ]; then \
-        echo "Call (example) : make TAS=any% FILE=0-init.lua register"; \
+	@if [ '$(TAS_CATEGORY)' == '' ] || [ '$(FILE)' == '' ]; then \
+        echo "Call (example) : make TAS_CATEGORY=any% FILE=0-init.lua register"; \
         exit 1; \
     fi
-	@[ -d $(TAS_FOLDER)/$(TAS) ] || mkdir $(TAS_FOLDER)/$(TAS)
-	@lua scripts/register.lua $(TAS) $(FILE) $(TAS_FOLDER) $(TAS_FILE_TEMPLATE)
+	@[ -d $(TAS_FOLDER)/$(TAS_CATEGORY) ] || mkdir $(TAS_FOLDER)/$(TAS_CATEGORY)
+	@lua scripts/register.lua $(TAS_CATEGORY) $(FILE) $(TAS_FOLDER) $(TAS_FILE_TEMPLATE)
 	@make bizhawk-lfs
 
-# ### ### #
-#  Video  #
-# ### ### #
-
-# An easy setup to produce youtube ready videos in mp4 is to configure the output video that way :
-# > Recording parameters : Writer => FFMPEG Writer ; Video Format => MP4
-
-# The next tasks will help to generate a youtube ready video after recording (which will output an avi file)
-# > Recording parameters : A/V Writer => AVI Writer ; Compressor => Codec Intel IYUV
-
-# GAME is the name of the first recording file without extension
-# > To prevent from errors (in make commands), you should avoid space into the name and prefer a slugified name
-
-#
-# -- Task: video-convert-avi-to-mp4 --
-#
-# >> Convert from avi video (from Bizhawk) to mp4 video (for youtube) using ffmpeg <<
-#
-# !! Required variable(s) !!
-# FFMPEG : Path to the ffmpeg binary (ex: ./ffmpeg)
-# GAME : @see above
-# CATEGORY : Category of the tas (ex: "any%")
-#
-
-video-convert-avi-to-mp4:
-	@$(FFMPEG) -i $(PWD)/$(PUBLICATION_FOLDER)/tas-$(GAME)-$(CATEGORY).avi -c:v libx264 -crf 19 -preset slow -c:a aac -b:a 192k -ac 2 $(PWD)/$(PUBLICATION_FOLDER)/tas-$(GAME)-$(CATEGORY).mp4
-
-#
-# -- Task: video-glue-parts --
-#
-# >> Create one video by joining fragments using ffmpeg <<
-#
-# !! Required variable(s) !!
-# FFMPEG : Path to the ffmpeg binary (ex: ./ffmpeg)
-# GAME : @see above
-# CATEGORY : Category of the tas (ex: "any%")
-#
+## +---------+
+## |  Video  |
+## +---------+
+##
+## Easy setup to produce youtube videos :
+##
+## > Writer : FFMPEG Writer
+## > Video Format : MP4
+##
+## +--------------------------+
+## |  Task: video-glue-parts  |
+## +--------------------------+
+##
+## >> Create one video by joining fragments using ffmpeg
+##
+## * Required environment variables
+##
+## - FFMPEG
+## - GAME
+## - TAS_CATEGORY
+##
 
 video-glue-parts:
-	@$(FFMPEG) -f concat -safe 0 -i $(PWD)/$(PUBLICATION_FOLDER)/$(GAME)-video-parts.txt -c copy $(PWD)/$(PUBLICATION_FOLDER)/tas-$(GAME)-$(CATEGORY).avi
+	@$(FFMPEG) -f concat -safe 0 -i $(PWD)/$(PUBLICATION_FOLDER)/$(TAS_CATEGORY)/$(GAME)-video-parts.txt -c copy $(PWD)/$(PUBLICATION_FOLDER)/tas-$(GAME)-$(TAS_CATEGORY).avi
 
-#
-# -- Task: video-prepare-parts --
-#
-# >> Create the file needed by ffmpeg to glue video parts together <<
-#
-# !! Required variable(s) !!
-# GAME : @see above
-#
+## +-----------------------------+
+## |  Task: video-prepare-parts  |
+## +-----------------------------+
+##
+## >> Create the file needed by ffmpeg to glue video parts together
+##
+## * Required environment variable
+##
+## - GAME
+##
 
 video-prepare-parts:
-	@ls $(PWD)/$(PUBLICATION_FOLDER)/$(GAME)* | sed "s/^/file '/" | sed "s/$$/'/" > $(PWD)/$(PUBLICATION_FOLDER)/$(GAME)-video-parts.txt
+	@ls $(PWD)/$(PUBLICATION_FOLDER)/$(TAS_CATEGORY)/$(GAME)* | sed "s/^/file '/" | sed "s/$$/'/" > $(PWD)/$(PUBLICATION_FOLDER)/$(TAS_CATEGORY)/$(GAME)-video-parts.txt

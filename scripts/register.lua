@@ -2,7 +2,7 @@
 
 local Register = {}
 
-local function process(tas, file, tasPath, tasFileTemplate)
+Register.process = function (tas, file, tasPath, tasFileTemplate)
     local f = io.open(tasFileTemplate, 'rb')
     local c = f:read('*all')
     f:close()
@@ -11,8 +11,6 @@ local function process(tas, file, tasPath, tasFileTemplate)
     f:write(c)
     f:close()
 end
-
-Register.process = process
 
 -- Call
 

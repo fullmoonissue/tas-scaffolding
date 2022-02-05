@@ -1,4 +1,4 @@
-local input = require('core/input')
+local input = require('tas/joypadInputs')
 
 input:select(3)
 

@@ -1,60 +1,48 @@
--- TAS configuration
-local play = require('configuration/play')
--- Paths configuration
 local paths = require('configuration/paths')
+local play = require(paths['configuration']['play'])
 
--- ## Current TAS category assigned ?
-local currentTas = play['currentTas']
-if not currentTas then
+-- ## ### ### ### ### ##
+-- ## Check category  ##
+-- ## ### ### ### ### ##
+local currentCategory = play['currentCategory']
+if not currentCategory then
     console.clear()
-    console.log('>>> The value of "currentTas" has to be set in "configuration/play.lua" <<<')
+    console.log('>>> The value of "currentCategory" has to be set in "configuration/play.lua" <<<')
 end
 
--- ## Load a savestate (file), if defined
-local preloads = require(paths['collection']['preload'])
-if preloads[currentTas] ~= nil then
-    savestate.load(table.concat({ paths['folder']['savestate'], preloads[currentTas] }, '/'))
+-- ## ### ### ### ### ### ### ##
+-- ## Load a savestate (file) ##
+-- ## ### ### ### ### ### ### ##
+local savestates = require(paths['configuration']['savestate'])
+if savestates[currentCategory] ~= nil then
+    savestate.load(table.concat({ paths['folder']['savestate'], savestates[currentCategory] }, '/'))
 end
 
--- ## Load a savestate (slot), if defined
+-- ## ### ### ### ### ### ### ##
+-- ## Load a savestate (slot) ##
+-- ## ### ### ### ### ### ### ##
 local loadSlot = play['loadSlot']
 if loadSlot ~= nil then
     savestate.loadslot(loadSlot)
 end
 
--- ## Configure subscribers
-local subscriberOverlay = require(paths['collection']['overlay']).subscribe()
-local subscriberScreenshot = require(paths['collection']['screenshot']).subscribe()
+-- ## ### ### ### ### ### ### ##
+-- ##  Configure subscribers  ##
+-- ## ### ### ### ### ### ### ##
+local subscriberBizHawk = require(paths['subscriber']['bizhawk']).subscribe()
+local subscriberOverlay = require(paths['subscriber']['overlay']).subscribe()
+local subscriberScreenshot = require(paths['subscriber']['screenshot']).subscribe()
 local pubSub = require('mediator')()
 pubSub:subscribe({ 'frame.current' }, function(fc)
     subscriberOverlay(fc)
     subscriberScreenshot(fc)
+    subscriberBizHawk(fc)
 end)
 
--- ## Retrieve the inputs of the current tas' category
-local files = {}
-local cFiles = require(paths['tas']['files'])
-if cFiles[currentTas] ~= nil then
-    for _, file in ipairs(cFiles[currentTas]) do
-        files[#files + 1] = table.concat({ paths['folder']['tas'], currentTas, file }, '/')
-    end
-end
-local joypadSet = require('core/input').merge(files)
-
--- ## Infinite loop
-local fc
+-- ## ### ### ### ### ##
+-- ##  Infinite loop  ##
+-- ## ### ### ### ### ##
 while true do
-    -- 1. Retrieve the current frame
-    fc = emu.framecount()
-
-    -- 2. Dispatch 'frame.current' event
-    pubSub:publish({ 'frame.current' }, fc)
-
-    -- 3. If defined, send the configured inputs to Bizhawk
-    if joypadSet[fc] then
-        joypad.set(joypadSet[fc])
-    end
-
-    -- 4. Forward to the next frame
+    pubSub:publish({ 'frame.current' }, emu.framecount())
     emu.frameadvance()
 end

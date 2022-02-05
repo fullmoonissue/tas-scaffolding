@@ -17,3 +17,6 @@ any = true
 
 [savestate]
 any = true
+
+[SQL]
+any = true

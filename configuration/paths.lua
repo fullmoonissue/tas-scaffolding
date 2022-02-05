@@ -1,23 +1,29 @@
--- Take note that if you change the paths here, the paths quoted into the tas-scaffolding's README.md will be no
--- more valid. Do it with caution.
+-- Take note that if you change the paths here, the paths quoted into :
+-- * README.md
+-- * assets/templates/Makefile
+-- will be no more valid. Do it with caution.
 
 return {
-    ['collection'] = {
-        ['overlay'] = 'plugins/overlay/collection',
-        ['preload'] = 'plugins/preload/collection',
-        ['screenshot'] = 'plugins/screenshot/collection',
+    ['configuration'] = {
+        ['play'] = 'configuration/play',
+        ['savestate'] = 'configuration/savestates',
+        ['screenshot'] = 'configuration/screenshots',
+    },
+    ['subscriber'] = {
+        ['bizhawk'] = 'src/subscriber/bizhawk',
+        ['overlay'] = 'src/subscriber/overlay',
+        ['screenshot'] = 'src/subscriber/screenshot',
     },
     ['folder'] = {
-        ['bk2'] = 'plugins/bizhawk/bk2',
+        ['bk2'] = 'assets/bk2',
         ['publication'] = 'assets/publication',
-        ['savestate'] = 'plugins/preload/savestate',
+        ['savestate'] = 'assets/savestates',
         ['tas'] = 'tas',
     },
     ['tas'] = {
         ['files'] = 'configuration/files',
-        ['infos'] = 'configuration/tas',
     },
     ['template'] = {
-        ['newFile'] = 'assets/templates/new-tas-file.lua',
+        ['newFile'] = 'assets/templates/new-inputs-file.lua',
     },
 }

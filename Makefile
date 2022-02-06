@@ -67,21 +67,21 @@ test:
 ##
 ## * Required environment variables
 ##
-## - BIZHAWK_START_FILE
+## - BIZHAWK_START_FILE_PATH
 ## - TAS_PROJECT_PATH
 ## - TAS_SCAFFOLDING_PROJECT_PATH
 ##
 
 test-overall:
-	@if [ '$(BIZHAWK_START_FILE)' == '' ] || [ '$(TAS_PROJECT_PATH)' == '' ] || [ '$(TAS_SCAFFOLDING_PROJECT_PATH)' == '' ]; then \
-		echo "Call (example) : make BIZHAWK_START_FILE=/tmp/start-test.lua TAS_PROJECT_PATH=/tmp/tas-project TAS_SCAFFOLDING_PROJECT_PATH=/tmp/tas-scaffolding test-overall"; \
+	@if [ '$(BIZHAWK_START_FILE_PATH)' == '' ] || [ '$(TAS_PROJECT_PATH)' == '' ] || [ '$(TAS_SCAFFOLDING_PROJECT_PATH)' == '' ]; then \
+		echo "Call (example) : make BIZHAWK_START_FILE_PATH=/tmp/start-test.lua TAS_PROJECT_PATH=/tmp/tas-project TAS_SCAFFOLDING_PROJECT_PATH=/tmp/tas-scaffolding test-overall"; \
 		exit 1; \
 	fi
-	rm -f $(BIZHAWK_START_FILE)
+	rm -f $(BIZHAWK_START_FILE_PATH)
 	rm -rf $(TAS_PROJECT_PATH)
 	mkdir $(TAS_PROJECT_PATH)
 	cd $(TAS_SCAFFOLDING_PROJECT_PATH) && make PROJECT_PATH=$(TAS_PROJECT_PATH) build-scaffolding
-	ln -s $(TAS_PROJECT_PATH)/start.lua $(BIZHAWK_START_FILE)
+	ln -s $(TAS_PROJECT_PATH)/start.lua $(BIZHAWK_START_FILE_PATH)
 	cd $(TAS_PROJECT_PATH) && make TAS_CATEGORY=any% FILE=0-init.lua register
 	sed -i '' 's/local currentCategory = nil/local currentCategory = "any%"/' $(TAS_PROJECT_PATH)/configuration/play.lua
 

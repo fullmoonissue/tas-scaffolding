@@ -1,3 +1,8 @@
+<a name="4.1.0"></a>
+## [4.1.0] - 2022-02-06
+### Add
+- Add a command to test all the scaffolding process
+
 <a name="4.0.0"></a>
 ## [4.0.0] - 2022-02-05
 ### Add

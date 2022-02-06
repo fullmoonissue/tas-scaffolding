@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-SCAFFOLDING_VERSION=4.0.0
+SCAFFOLDING_VERSION=4.1.0
 
 help:
 	@awk 'BEGIN {FS = ":##"; printf "\033[36m\033[0m\n"} /^##/ { printf "\033[36m%-20s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST) | sed "s/## //g"

@@ -306,6 +306,9 @@ make test
     If an error is displayed on the lua console
     Then fix into test-tas-scaffolding project, close the Lua Console and repeat 2b. (to recheck)
     And once the fix is done, propagate the fix into the tas-scaffolding project
+
+The command make test-overall will help to test much faster the whole scaffolding process.
+
 ```
 
 ## Changelog
